@@ -48,7 +48,7 @@ The following features are implemented to fulfill client and user needs:
 
 * Database-driven product management using SQLite / MySQL
 
-*SEO-friendly structure with reusable templates
+* SEO-friendly structure with reusable templates
 
 * kend architecture prepared for:
 
