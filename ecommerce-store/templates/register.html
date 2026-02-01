@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-box">
+                <h1 class="auth-box__title">Create an Account</h1>
+                <p class="auth-box__subtitle">Join Ez Gadgets today</p>
+
+                <form method="POST" class="auth-form">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Full Name *</label>
+                        <input type="text" id="name" name="name" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password * (min 6 characters)</label>
+                        <input type="password" id="password" name="password" class="form-input" required minlength="6">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password" class="form-label">Confirm Password *</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-input" required>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--large btn--full-width">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="auth-box__footer">
+                    <p>Already have an account? <a href="{{ url_for('login') }}" class="auth-box__link">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

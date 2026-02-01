@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+{% block meta_description %}Complete your purchase{% endblock %}
+
+{% block content %}
+<section class="checkout-section">
+    <div class="container">
+        <h1 class="page-title">Checkout</h1>
+
+        <div class="checkout-layout">
+            <div class="checkout-form-wrapper">
+                <h2 class="checkout-form__title">Billing Details</h2>
+                <form method="POST" action="{{ url_for('place_order') }}" class="checkout-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Full Name *</label>
+                            <input type="text" id="name" name="name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address" class="form-label">Shipping Address *</label>
+                        <textarea id="address" name="address" rows="3" class="form-textarea" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city" class="form-label">City *</label>
+                        <input type="text" id="city" name="city" class="form-input" value="Dhaka" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes" class="form-label">Order Notes (Optional)</label>
+                        <textarea id="notes" name="notes" rows="3" class="form-textarea" placeholder="Special instructions for delivery..."></textarea>
+                    </div>
+
+                    <div class="payment-methods">
+                        <h3 class="payment-methods__title">Payment Method</h3>
+                        <div class="payment-option">
+                            <input type="radio" id="cod" name="payment" value="cod" checked>
+                            <label for="cod">Cash on Delivery (COD)</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="bkash" name="payment" value="bkash">
+                            <label for="bkash">bKash</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="nagad" name="payment" value="nagad">
+                            <label for="nagad">Nagad</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--large btn--full-width">Place Order</button>
+                </form>
+            </div>
+
+            <aside class="checkout-summary">
+                <div class="checkout-summary__content">
+                    <h2 class="checkout-summary__title">Your Order</h2>
+                    
+                    <div class="checkout-items">
+                        {% for item in cart_items %}
+                        <div class="checkout-item">
+                            <div class="checkout-item__info">
+                                <span class="checkout-item__name">{{ item.product.name }}</span>
+                                <span class="checkout-item__qty">× {{ item.quantity }}</span>
+                            </div>
+                            <span class="checkout-item__price">৳{{ "%.0f"|format(item.subtotal * 110) }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="checkout-summary__row">
+                        <span class="checkout-summary__label">Subtotal:</span>
+                        <span class="checkout-summary__value">৳{{ "%.0f"|format(cart_total.total_price * 110) }}</span>
+                    </div>
+
+                    <div class="checkout-summary__row">
+                        <span class="checkout-summary__label">Shipping:</span>
+                        <span class="checkout-summary__value">
+                            {% if cart_total.total_price >= 50 %}
+                            FREE
+                            {% else %}
+                            ৳100
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="checkout-summary__row checkout-summary__row--total">
+                        <span class="checkout-summary__label">Total:</span>
+                        <span class="checkout-summary__value">
+                            ৳{{ "%.0f"|format((cart_total.total_price + (0 if cart_total.total_price >= 50 else 1)) * 110) }}
+                        </span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

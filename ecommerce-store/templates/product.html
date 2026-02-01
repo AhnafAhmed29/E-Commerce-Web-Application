@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+{% block meta_description %}{{ product.description }}{% endblock %}
+
+{% block content %}
+<section class="product-detail">
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="{{ url_for('index') }}" class="breadcrumb__link">Home</a>
+            <span class="breadcrumb__separator">/</span>
+            <a href="{{ url_for('products') }}" class="breadcrumb__link">Products</a>
+            <span class="breadcrumb__separator">/</span>
+            <a href="{{ url_for('products', category=product.category) }}" class="breadcrumb__link">{{ product.category }}</a>
+            <span class="breadcrumb__separator">/</span>
+            <span class="breadcrumb__current">{{ product.name }}</span>
+        </nav>
+
+        <div class="product-detail__content">
+            <div class="product-detail__gallery">
+                <div class="product-image">
+                    <span class="product-image__placeholder">📷</span>
+                </div>
+            </div>
+
+            <div class="product-detail__info">
+                <h1 class="product-detail__title">{{ product.name }}</h1>
+                
+                <div class="product-detail__meta">
+                    <span class="product-detail__category">{{ product.category }}</span>
+                    {% if product.stock > 0 %}
+                    <span class="product-detail__stock product-detail__stock--available">
+                        ✓ In Stock ({{ product.stock }} available)
+                    </span>
+                    {% else %}
+                    <span class="product-detail__stock product-detail__stock--out">
+                        ✗ Out of Stock
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="product-detail__price">
+                    ${{ "%.2f"|format(product.price) }}
+                </div>
+
+                <div class="product-detail__description">
+                    <h2>Description</h2>
+                    <p>{{ product.description }}</p>
+                </div>
+
+                {% if specs %}
+                <div class="product-detail__specs">
+                    <h2>Specifications</h2>
+                    <ul class="specs-list">
+                        {% for spec in specs %}
+                        <li class="specs-list__item">{{ spec.spec }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="product-detail__form">
+                    <div class="product-detail__quantity">
+                        <label for="quantity" class="product-detail__label">Quantity:</label>
+                        <input 
+                            type="number" 
+                            id="quantity" 
+                            name="quantity" 
+                            value="1" 
+                            min="1" 
+                            max="{{ product.stock if product.stock > 0 else 0 }}"
+                            class="product-detail__input"
+                            {% if product.stock == 0 %}disabled{% endif %}
+                        >
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        class="btn btn--primary btn--large"
+                        {% if product.stock == 0 %}disabled{% endif %}
+                    >
+                        {% if product.stock > 0 %}
+                        Add to Cart 🛒
+                        {% else %}
+                        Out of Stock
+                        {% endif %}
+                    </button>
+                </form>
+
+                <div class="product-detail__features">
+                    <div class="feature-item">
+                        <span class="feature-item__icon">🚚</span>
+                        <span class="feature-item__text">Free shipping on orders over $50</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-item__icon">↩️</span>
+                        <span class="feature-item__text">30-day return policy</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-item__icon">✅</span>
+                        <span class="feature-item__text">1-year warranty included</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

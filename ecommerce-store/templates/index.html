@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+{% block meta_description %}Ez Gadgets – Bangladesh's trusted gaming accessories store with official warranty, nationwide delivery, and best prices{% endblock %}
+
+{% block content %}
+<!-- Hero Banners Section -->
+<section class="hero-banners">
+    <div class="container">
+        <div class="hero-banners__grid">
+            <!-- Main Banner -->
+            <div class="hero-banner hero-banner--large">
+                <div class="hero-banner__content">
+                    <div class="hero-banner__brand">EZ × KOORUI</div>
+                    <h1 class="hero-banner__title">Offical Distributor</h1>
+                    <p class="hero-banner__subtitle">Your Next Monitor Awaits</p>
+                    <a href="{{ url_for('products', category='Monitors') }}" class="hero-banner__button">Buy Now</a>
+                </div>
+                <div class="hero-banner__image">
+                    <div class="hero-banner__placeholder">🖥️</div>
+                </div>
+            </div>
+
+            <!-- Side Banner 1 -->
+            <div class="hero-banner hero-banner--small hero-banner--purple">
+                <div class="hero-banner__content">
+                    <h2 class="hero-banner__title-small">Upgrade Your Esports Edge.</h2>
+                    <p class="hero-banner__subtitle-small">Experience 8000Hz Speed</p>
+                    <p class="hero-banner__subtitle-small">Shop the Eweadn Deep08 Flex</p>
+                    <a href="{{ url_for('products', category='Keyboards') }}" class="hero-banner__button hero-banner__button--small">Shop Now</a>
+                </div>
+                <div class="hero-banner__image-small">
+                    <div class="hero-banner__placeholder-small">⌨️</div>
+                </div>
+            </div>
+
+            <!-- Side Banner 2 -->
+            <div class="hero-banner hero-banner--small hero-banner--green">
+                <div class="hero-banner__content">
+                    <h2 class="hero-banner__title-small">VGN NEON HE Rappid Trigger</h2>
+                    <p class="hero-banner__subtitle-small">Fastest input time of just 0.0107ms!</p>
+                    <a href="{{ url_for('products', category='Keyboards') }}" class="hero-banner__button hero-banner__button--small">Discover</a>
+                </div>
+                <div class="hero-banner__image-small">
+                    <div class="hero-banner__placeholder-small">⌨️</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="products-section">
+    <div class="container">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="products-grid">
+            {% for product in featured_products %}
+            <div class="product-card">
+                <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-card__link">
+                    <div class="product-card__image">
+                        <span class="product-card__placeholder">📷</span>
+                    </div>
+                    <div class="product-card__content">
+                        <h3 class="product-card__title">{{ product.name }}</h3>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">৳{{ "%.0f"|format(product.price * 110) }}</span>
+                            {% if product.stock > 0 %}
+                            <span class="product-card__stock product-card__stock--available">In Stock</span>
+                            {% else %}
+                            <span class="product-card__stock product-card__stock--out">Out of Stock</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="product-card__form">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="product-card__button" {% if product.stock == 0 %}disabled{% endif %}>
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="products-section__action">
+            <a href="{{ url_for('products') }}" class="btn btn--primary">View All Products</a>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="categories-section">
+    <div class="container">
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="categories-grid">
+            {% for category in categories %}
+            <a href="{{ url_for('products', category=category.category) }}" class="category-card">
+                <span class="category-card__icon">
+                    {% if category.category == 'Keyboards' %}⌨️
+                    {% elif category.category == 'Mice' %}🖱️
+                    {% elif category.category == 'Audio' %}🎧
+                    {% elif category.category == 'Monitors' %}🖥️
+                    {% elif category.category == 'Accessories' %}🎮
+                    {% elif category.category == 'Furniture' %}🪑
+                    {% elif category.category == 'Storage' %}💾
+                    {% else %}📦
+                    {% endif %}
+                </span>
+                <h3 class="category-card__title">{{ category.category }}</h3>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Brands Section -->
+<section class="brands-section">
+    <div class="container">
+        <h2 class="section-title">Official Distributors</h2>
+        <p class="brands-section__subtitle">Authorized distributor of premium gaming brands in Bangladesh</p>
+        <div class="brands-grid">
+            <div class="brand-card">LINGBAO</div>
+            <div class="brand-card">IRONCAT</div>
+            <div class="brand-card">ATK</div>
+            <div class="brand-card">VXE</div>
+            <div class="brand-card">VGN</div>
+            <div class="brand-card">GAMESIR</div>
+            <div class="brand-card">EWEADN</div>
+            <div class="brand-card">KOORUI</div>
+            <div class="brand-card">8BITDO</div>
+        </div>
+    </div>
+</section>
+{% endblock %}

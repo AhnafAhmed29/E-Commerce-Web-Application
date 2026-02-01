@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}My Account{% endblock %}
+
+{% block content %}
+<section class="account-section">
+    <div class="container">
+        <h1 class="page-title">My Account</h1>
+
+        <div class="account-layout">
+            <!-- Profile Section -->
+            <aside class="account-sidebar">
+                <div class="account-menu">
+                    <h3 class="account-menu__title">Account Menu</h3>
+                    <ul class="account-menu__list">
+                        <li class="account-menu__item account-menu__item--active">
+                            <a href="#profile">Profile</a>
+                        </li>
+                        <li class="account-menu__item">
+                            <a href="#orders">My Orders</a>
+                        </li>
+                        <li class="account-menu__item">
+                            <a href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="account-main">
+                <!-- Profile Information -->
+                <div id="profile" class="account-card">
+                    <h2 class="account-card__title">Profile Information</h2>
+                    <form method="POST" action="{{ url_for('update_account') }}" class="account-form">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-input" value="{{ user.name }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-input" value="{{ user.email }}" disabled>
+                            <small class="form-help">Email cannot be changed</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" value="{{ user.phone or '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea id="address" name="address" rows="3" class="form-textarea">{{ user.address or '' }}</textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary">Update Profile</button>
+                    </form>
+                </div>
+
+                <!-- Orders Section -->
+                <div id="orders" class="account-card">
+                    <h2 class="account-card__title">My Orders</h2>
+
+                    {% if orders %}
+                    <div class="orders-table-wrapper">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>#{{ order.id }}</td>
+                                    <td>{{ order.created_at[:10] }}</td>
+                                    <td>৳{{ "%.0f"|format(order.total_amount * 110) }}</td>
+                                    <td>
+                                        <span class="status-badge status-badge--{{ order.status }}">
+                                            {{ order.status|capitalize }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('view_order', order_id=order.id) }}" class="btn btn--small">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <p class="empty-state__text">You haven't placed any orders yet.</p>
+                        <a href="{{ url_for('products') }}" class="btn btn--primary">Start Shopping</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Products{% endblock %}
+{% block meta_description %}Browse our complete collection of gaming gadgets and tech accessories{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-header__title">All Products</h1>
+        <p class="page-header__subtitle">Discover our full range of premium gaming gear</p>
+    </div>
+</section>
+
+<section class="products-section">
+    <div class="container">
+        <div class="products-layout">
+            <aside class="products-sidebar">
+                <div class="filter-group">
+                    <h3 class="filter-group__title">Categories</h3>
+                    <ul class="filter-list">
+                        <li class="filter-list__item">
+                            <a href="{{ url_for('products') }}" class="filter-list__link {% if not selected_category %}filter-list__link--active{% endif %}">
+                                All Products
+                            </a>
+                        </li>
+                        {% for category in categories %}
+                        <li class="filter-list__item">
+                            <a href="{{ url_for('products', category=category.category) }}" 
+                               class="filter-list__link {% if selected_category == category.category %}filter-list__link--active{% endif %}">
+                                {{ category.category }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </aside>
+
+            <div class="products-main">
+                {% if selected_category %}
+                <div class="products-filter-info">
+                    <p>Showing products in <strong>{{ selected_category }}</strong></p>
+                    <a href="{{ url_for('products') }}" class="products-filter-clear">Clear filter</a>
+                </div>
+                {% endif %}
+
+                {% if products %}
+                <div class="products-grid">
+                    {% for product in products %}
+                    <article class="product-card">
+                        <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-card__link">
+                            <div class="product-card__image">
+                                <span class="product-card__placeholder">📷</span>
+                            </div>
+                            <div class="product-card__content">
+                                <h3 class="product-card__title">{{ product.name }}</h3>
+                                <p class="product-card__category">{{ product.category }}</p>
+                                <p class="product-card__description">{{ product.description[:80] }}...</p>
+                                <div class="product-card__footer">
+                                    <span class="product-card__price">${{ "%.2f"|format(product.price) }}</span>
+                                    {% if product.stock > 0 %}
+                                    <span class="product-card__stock product-card__stock--available">In Stock ({{ product.stock }})</span>
+                                    {% else %}
+                                    <span class="product-card__stock product-card__stock--out">Out of Stock</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <p class="empty-state__text">No products found in this category.</p>
+                    <a href="{{ url_for('products') }}" class="btn btn--secondary">View All Products</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

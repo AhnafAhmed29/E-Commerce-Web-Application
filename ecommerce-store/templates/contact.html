@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us{% endblock %}
+{% block meta_description %}Get in touch with GGEZ Gadgets - we're here to help with your questions{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-header__title">Contact Us</h1>
+        <p class="page-header__subtitle">We're here to help with any questions</p>
+    </div>
+</section>
+
+<section class="contact-section">
+    <div class="container">
+        <div class="contact-layout">
+            <div class="contact-info">
+                <h2 class="contact-info__title">Get in Touch</h2>
+                <p class="contact-info__text">
+                    Have a question about our products or services? Our friendly team is always ready to help. Reach out through any of the channels below.
+                </p>
+
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <span class="contact-method__icon">📧</span>
+                        <div class="contact-method__content">
+                            <h3 class="contact-method__title">Email</h3>
+                            <p class="contact-method__detail">support@ggezgadgets.com</p>
+                            <p class="contact-method__note">We respond within 24 hours</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <span class="contact-method__icon">📞</span>
+                        <div class="contact-method__content">
+                            <h3 class="contact-method__title">Phone</h3>
+                            <p class="contact-method__detail">+1 (555) 123-4567</p>
+                            <p class="contact-method__note">Mon-Fri: 9am-6pm EST</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <span class="contact-method__icon">💬</span>
+                        <div class="contact-method__content">
+                            <h3 class="contact-method__title">Live Chat</h3>
+                            <p class="contact-method__detail">Available on our website</p>
+                            <p class="contact-method__note">24/7 support</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <span class="contact-method__icon">📍</span>
+                        <div class="contact-method__content">
+                            <h3 class="contact-method__title">Address</h3>
+                            <p class="contact-method__detail">123 Gaming Street</p>
+                            <p class="contact-method__detail">Tech City, TC 12345</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-hours">
+                    <h3 class="contact-hours__title">Business Hours</h3>
+                    <ul class="contact-hours__list">
+                        <li><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM EST</li>
+                        <li><strong>Saturday:</strong> 10:00 AM - 4:00 PM EST</li>
+                        <li><strong>Sunday:</strong> Closed</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="contact-form-wrapper">
+                <h2 class="contact-form__title">Send us a Message</h2>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" id="name" name="name" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Subject</label>
+                        <select id="subject" name="subject" class="form-select" required>
+                            <option value="">Select a topic</option>
+                            <option value="product">Product Question</option>
+                            <option value="order">Order Status</option>
+                            <option value="return">Returns & Refunds</option>
+                            <option value="technical">Technical Support</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea id="message" name="message" rows="6" class="form-textarea" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--large">Send Message</button>
+                </form>
+
+                <p class="contact-form__note">
+                    * This is a demo form. In production, this would be connected to a backend service.
+                </p>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3 class="faq-item__question">What's your shipping policy?</h3>
+                    <p class="faq-item__answer">We offer free shipping on orders over $50. Standard orders ship within 2-3 business days.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3 class="faq-item__question">Do you ship internationally?</h3>
+                    <p class="faq-item__answer">Yes! We ship to most countries worldwide. International shipping rates vary by location.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3 class="faq-item__question">What's your return policy?</h3>
+                    <p class="faq-item__answer">We offer a 30-day hassle-free return policy. Items must be in original condition with all packaging.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3 class="faq-item__question">Are your products under warranty?</h3>
+                    <p class="faq-item__answer">Yes! All products come with a 1-year manufacturer warranty covering defects and malfunctions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

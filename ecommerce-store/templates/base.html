@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}Ez Gadgets – Gaming Accessories & Gadgets Store in Bangladesh{% endblock %}">
+    <title>{% block title %}Ez Gadgets{% endblock %} – Gaming Accessories & Gadgets Store in Bangladesh</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Top Info Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar__content">
+                <div class="top-bar__links">
+                    <a href="#">Refund And Returns Policy</a>
+                    <a href="#">Terms & Conditions</a>
+                    <a href="#">Warranty Policy</a>
+                </div>
+                <div class="top-bar__links top-bar__links--right">
+                    <a href="#">Our Brands</a>
+                    <a href="#">FAQs</a>
+                    <a href="#">Track You Order</a>
+                    <a href="{{ url_for('contact') }}">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <!-- Logo -->
+                <a href="{{ url_for('index') }}" class="header__logo">
+                    <div class="header__logo-icon">⚡</div>
+                    <div class="header__logo-text">
+                        <span class="header__logo-main">EZ</span>
+                        <span class="header__logo-sub">GADGETS</span>
+                    </div>
+                </a>
+
+                <!-- Search Bar -->
+                <div class="header__search">
+                    <form action="{{ url_for('products') }}" method="get" class="search-form">
+                        <input type="text" name="q" placeholder="Search for products" class="search-form__input">
+                        <button type="submit" class="search-form__button">🔍</button>
+                    </form>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="header__actions">
+                    <div class="header__phone">
+                        <span class="header__phone-icon">📞</span>
+                        <div class="header__phone-content">
+                            <div class="header__phone-label">Hotline 10AM-8PM</div>
+                            <div class="header__phone-number">01819-940370</div>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('cart') }}" class="header__cart">
+                        <span class="header__cart-icon">🛒</span>
+                        <div class="header__cart-content">
+                            <div class="header__cart-label">৳ {{ "%.2f"|format(cart_total.total_price) }}</div>
+                            <div class="header__cart-items">{{ cart_total.total_items }} items</div>
+                        </div>
+                        {% if cart_total.total_items > 0 %}
+                        <span class="header__cart-badge">{{ cart_total.total_items }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <ul class="nav__menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="#">3d Printing</a></li>
+                <li><a href="#">Pc Components</a></li>
+                <li class="nav__dropdown">
+                    <a href="#">Peripherals</a>
+                    <ul class="nav__submenu">
+                        {% for category in all_categories %}
+                        <li><a href="{{ url_for('products', category=category.category) }}">{{ category.category }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><a href="#">Display / Monitors</a></li>
+                <li><a href="#">E-Reader</a></li>
+                <li><a href="#">Accessories</a></li>
+                <li><a href="#">Racing Simulator</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <li><a href="#">Wishlist ❤️</a></li>
+                {% if current_user %}
+                    {% if current_user.role == 'admin' %}
+                    <li><a href="{{ url_for('admin_dashboard') }}">Admin Panel</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('account') }}">My Account</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash flash--{{ category }}">
+                        <div class="container">
+                            <span>{{ message }}</span>
+                            <button class="flash__close" onclick="this.parentElement.parentElement.remove()">×</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Trust Badges -->
+    <section class="trust-section">
+        <div class="container">
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <span class="trust-item__icon">💳</span>
+                    <span class="trust-item__text">Secure Payment Options</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-item__icon">💬</span>
+                    <span class="trust-item__text">24/7 Customer Support</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-item__icon">💰</span>
+                    <span class="trust-item__text">Low Price than Other Stores</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-item__icon">✅</span>
+                    <span class="trust-item__text">Official Warranty</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-item__icon">🎯</span>
+                    <span class="trust-item__text">Authentic Products</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-item__icon">🔒</span>
+                    <span class="trust-item__text">Secure</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">About Ez Gadgets</h3>
+                    <p class="footer__text">Bangladesh's trusted gaming accessories store offering keyboards, mice, controllers, monitors, and gadgets with official warranty, nationwide delivery, and best prices in BD.</p>
+                </div>
+                
+                <div class="footer__section">
+                    <h3 class="footer__title">Quick Links</h3>
+                    <ul class="footer__links">
+                        <li><a href="{{ url_for('products') }}">All Products</a></li>
+                        <li><a href="{{ url_for('about') }}">About Us</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                        <li><a href="#">Track Your Order</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer__section">
+                    <h3 class="footer__title">Categories</h3>
+                    <ul class="footer__links">
+                        {% for category in all_categories[:6] %}
+                        <li><a href="{{ url_for('products', category=category.category) }}">{{ category.category }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="footer__section">
+                    <h3 class="footer__title">Contact</h3>
+                    <p class="footer__text">📧 support@ezgadgets.com</p>
+                    <p class="footer__text">📞 01819-940370</p>
+                    <p class="footer__text">📍 Dhaka, Bangladesh</p>
+                </div>
+            </div>
+            
+            <div class="footer__bottom">
+                <p>&copy; 2026 Ez Gadgets. All rights reserved. | Powered by Ez Gadgets</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

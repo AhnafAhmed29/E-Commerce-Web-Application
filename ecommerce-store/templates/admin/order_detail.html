@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Order #{{ order.id }} - Admin{% endblock %}
+
+{% block content %}
+<section class="admin-section">
+    <div class="container">
+        <div class="admin-header">
+            <h1 class="page-title">Order #{{ order.id }}</h1>
+            <a href="{{ url_for('admin_orders') }}" class="btn btn--secondary">Back to Orders</a>
+        </div>
+
+        <div class="admin-nav">
+            <a href="{{ url_for('admin_dashboard') }}" class="admin-nav__link">Dashboard</a>
+            <a href="{{ url_for('admin_orders') }}" class="admin-nav__link admin-nav__link--active">Orders</a>
+            <a href="{{ url_for('admin_products') }}" class="admin-nav__link">Products</a>
+        </div>
+
+        <div class="order-detail-layout">
+            <div class="order-detail-main">
+                <!-- Order Items -->
+                <div class="admin-card">
+                    <h2 class="admin-card__title">Order Items</h2>
+                    <div class="order-items">
+                        {% for item in items %}
+                        <div class="order-item">
+                            <div class="order-item__info">
+                                <h3 class="order-item__name">{{ item.product_name }}</h3>
+                                <p class="order-item__details">
+                                    Quantity: {{ item.quantity }} × ৳{{ "%.0f"|format(item.price * 110) }}
+                                </p>
+                            </div>
+                            <div class="order-item__price">
+                                ৳{{ "%.0f"|format(item.quantity * item.price * 110) }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Customer Information -->
+                <div class="admin-card">
+                    <h2 class="admin-card__title">Customer Information</h2>
+                    <div class="order-info-grid">
+                        <div class="order-info-item">
+                            <strong>Name:</strong> {{ order.customer_name }}
+                        </div>
+                        <div class="order-info-item">
+                            <strong>Email:</strong> {{ order.customer_email }}
+                        </div>
+                        <div class="order-info-item">
+                            <strong>Phone:</strong> {{ order.customer_phone }}
+                        </div>
+                        <div class="order-info-item">
+                            <strong>Address:</strong> {{ order.customer_address }}
+                        </div>
+                        {% if order.notes %}
+                        <div class="order-info-item order-info-item--full">
+                            <strong>Notes:</strong> {{ order.notes }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary & Status -->
+            <aside class="order-detail-summary">
+                <div class="admin-card">
+                    <h2 class="admin-card__title">Order Details</h2>
+                    
+                    <div class="order-summary-row">
+                        <span>Order Date:</span>
+                        <span>{{ order.created_at[:10] }}</span>
+                    </div>
+
+                    <div class="order-summary-row">
+                        <span>Payment Method:</span>
+                        <span>{{ order.payment_method|upper }}</span>
+                    </div>
+
+                    <div class="order-summary-row">
+                        <span>Subtotal:</span>
+                        <span>৳{{ "%.0f"|format(order.total_amount * 110) }}</span>
+                    </div>
+
+                    <div class="order-summary-row">
+                        <span>Shipping:</span>
+                        <span>{% if order.total_amount >= 50 %}FREE{% else %}৳100{% endif %}</span>
+                    </div>
+
+                    <div class="order-summary-row order-summary-row--total">
+                        <span>Total:</span>
+                        <span>৳{{ "%.0f"|format((order.total_amount + (0 if order.total_amount >= 50 else 1)) * 110) }}</span>
+                    </div>
+                </div>
+
+                <!-- Update Status -->
+                <div class="admin-card">
+                    <h2 class="admin-card__title">Update Status</h2>
+                    <form method="POST" action="{{ url_for('admin_update_order_status', order_id=order.id) }}">
+                        <div class="form-group">
+                            <label for="status" class="form-label">Current Status</label>
+                            <select id="status" name="status" class="form-select">
+                                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>Processing</option>
+                                <option value="shipped" {% if order.status == 'shipped' %}selected{% endif %}>Shipped</option>
+                                <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>Delivered</option>
+                                <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Update Status</button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
