@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-page">
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <a href="{{ url_for('index') }}" class="admin-btn admin-btn-secondary">🏠 Home</a>
+            <h1>Manage Products</h1>
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <button onclick="toggleDarkMode()" class="admin-btn admin-btn-secondary">🌙 Dark Mode</button>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <!-- Admin Navigation -->
+    <div class="admin-container">
+        <div class="admin-nav">
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin_orders') }}">Orders</a>
+            <a href="{{ url_for('admin_products') }}" class="active">Products</a>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="admin-alert admin-alert-{{ 'success' if category == 'success' else 'error' }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Add Product Button -->
+        <div style="margin-bottom: 30px; text-align: right;">
+            <a href="{{ url_for('admin_add_product') }}" class="add-product-btn">+ Add New Product</a>
+        </div>
+
+        <!-- Products Table -->
+        <div class="admin-section">
+            <h2>All Products ({{ products|length }})</h2>
+            
+            {% if products %}
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td><strong>#{{ product.id }}</strong></td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                {% if product.main_image %}
+                                <img src="{{ product.main_image }}" style="width: 50px; height: 50px; object-fit: contain; background: rgba(255,255,255,0.1); padding: 5px; border-radius: 6px;">
+                                {% else %}
+                                <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--admin-text-muted);">No img</div>
+                                {% endif %}
+                                <div>
+                                    <div style="font-weight: 600;">{{ product.name }}</div>
+                                    <div style="font-size: 0.85rem; color: var(--admin-text-muted);">
+                                        {% if product.brand %}{{ product.brand.name }}{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ product.category.name if product.category else '-' }}</td>
+                        <td>
+                            <strong>৳{{ "{:,.0f}".format(product.price) }}</strong>
+                            {% if product.original_price and product.original_price > product.price %}
+                            <br><small style="color: var(--admin-text-muted); text-decoration: line-through;">৳{{ "{:,.0f}".format(product.original_price) }}</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if product.stock > 20 %}
+                            <span class="stock-badge stock-high">{{ product.stock }}</span>
+                            {% elif product.stock > 10 %}
+                            <span class="stock-badge stock-medium">{{ product.stock }}</span>
+                            {% elif product.stock > 0 %}
+                            <span class="stock-badge stock-low">{{ product.stock }}</span>
+                            {% else %}
+                            <span class="stock-badge stock-out">Out of stock</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 8px;">
+                                <a href="{{ url_for('admin_edit_product', product_id=product.id) }}" class="admin-btn admin-btn-secondary">Edit</a>
+                                <form method="POST" action="{{ url_for('admin_delete_product', product_id=product.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete {{ product.name }}?');">
+                                    <button type="submit" class="admin-btn admin-btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p style="color: var(--admin-text-muted); text-align: center; padding: 40px;">No products found</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('adminDarkMode', isDark ? 'true' : 'false');
+        }
+
+    // Load preference
+    if (localStorage.getItem('adminDarkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+    }
+    </script>
+
+</body>
+</html>

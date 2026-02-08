@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} - EZ Gadgets{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 30px;">
+    <div style="margin-bottom: 30px;">
+        <h1 style="font-size: 2rem; margin-bottom: 10px;">{{ page_title }}</h1>
+        <p style="color: #666;">Showing {{ products.total }} results</p>
+    </div>
+    
+    {% if products.items %}
+    <div class="products-grid">
+        {% for product in products.items %}
+        <div class="product-card">
+            <div class="product-badges">
+                {% if product.is_hot %}<span class="badge badge-hot">HOT</span>{% endif %}
+                {% if product.is_new %}<span class="badge badge-new">NEW</span>{% endif %}
+                {% if not product.is_in_stock %}<span class="badge badge-soldout">SOLD OUT</span>{% endif %}
+            </div>
+            
+            {% if product.has_discount %}
+            <div class="discount-badge">-{{ product.get_discount_percentage() }}%</div>
+            {% endif %}
+            
+            <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                <div class="product-image">
+                    <img src="{{ product.main_image or 'https://via.placeholder.com/300?text=' + product.name }}" alt="{{ product.name }}">
+                </div>
+            </a>
+            
+            <div class="product-info">
+                <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                </a>
+                
+                <div class="product-meta">
+                    {% if product.category %}{{ product.category.name }}{% endif %}
+                    {% if product.brand %}, {{ product.brand.name }}{% endif %}
+                </div>
+                
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                </div>
+                
+                <div class="product-price">
+                    <span class="current-price">৳ {{ "%.2f"|format(product.price) }}</span>
+                    {% if product.has_discount %}
+                    <span class="original-price">৳ {{ "%.2f"|format(product.original_price) }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if product.is_in_stock %}
+                <div class="product-actions">
+                    <form action="{{ url_for('add_to_cart') }}" method="post" style="flex: 1;">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+                    </form>
+                    <button class="btn btn-icon">❤️</button>
+                </div>
+                {% else %}
+                <div class="product-actions">
+                    <button class="btn btn-primary" style="width: 100%; opacity: 0.6;" disabled>Out of Stock</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if products.pages > 1 %}
+    <div class="pagination">
+        {% if products.has_prev %}
+        <a href="{{ url_for('products', page=products.prev_num, category=request.args.get('category'), q=request.args.get('q')) }}">‹ Previous</a>
+        {% endif %}
+        
+        {% for page_num in products.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == products.page %}
+                <span class="current">{{ page_num }}</span>
+                {% else %}
+                <a href="{{ url_for('products', page=page_num, category=request.args.get('category'), q=request.args.get('q')) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+            <span>...</span>
+            {% endif %}
+        {% endfor %}
+        
+        {% if products.has_next %}
+        <a href="{{ url_for('products', page=products.next_num, category=request.args.get('category'), q=request.args.get('q')) }}">Next ›</a>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <div style="text-align: center; padding: 60px 20px;">
+        <h2 style="color: #999;">No products found</h2>
+        <p style="color: #ccc; margin-top: 10px;">Try adjusting your search or browse our categories</p>
+        <a href="{{ url_for('products') }}" class="btn btn-primary" style="margin-top: 20px;">View All Products</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

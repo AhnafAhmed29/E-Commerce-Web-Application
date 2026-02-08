@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}My Wishlist - EZ Gadgets{% endblock %}
+
+{% block content %}
+<div class="container" style="margin: 40px auto; max-width: 1200px;">
+    <h1 style="margin-bottom: 30px; color: #1a0f2e;">
+        <span style="font-size: 2rem;">❤️</span> My Wishlist
+    </h1>
+    
+    {% if wishlist_items %}
+    <p style="color: #666; margin-bottom: 30px;">You have {{ wishlist_items|length }} item(s) in your wishlist</p>
+    
+    <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
+        {% for item in wishlist_items %}
+        <div class="product-card" style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: transform 0.3s;">
+            <div class="product-image" style="position: relative; overflow: hidden;">
+                <a href="{{ url_for('product_detail', slug=item.product.slug) }}">
+                    {% if item.product.main_image %}
+                    <img src="{{ item.product.main_image }}" alt="{{ item.product.name }}" style="width: 100%; height: 250px; object-fit: contain; background: #f8f8f8; padding: 20px;">
+                    {% else %}
+                    <img src="https://via.placeholder.com/250x250?text=No+Image" alt="{{ item.product.name }}" style="width: 100%; height: 250px; object-fit: cover;">
+                    {% endif %}
+                </a>
+                
+                <!-- Remove from Wishlist Button -->
+                <form method="POST" action="{{ url_for('remove_from_wishlist', product_id=item.product.id) }}" style="position: absolute; top: 10px; right: 10px;">
+                    <button type="submit" class="wishlist-btn-remove" title="Remove from wishlist">
+                        ❤️
+                    </button>
+                </form>
+                
+                <!-- Badges -->
+                <div style="position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px;">
+                    {% if item.product.is_hot %}
+                    <span class="badge badge-hot">HOT</span>
+                    {% endif %}
+                    {% if item.product.is_new %}
+                    <span class="badge badge-new">NEW</span>
+                    {% endif %}
+                    {% if not item.product.is_in_stock %}
+                    <span class="badge badge-sold-out">SOLD OUT</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="product-info" style="padding: 20px;">
+                <h3 style="margin-bottom: 10px; font-size: 1.1rem;">
+                    <a href="{{ url_for('product_detail', slug=item.product.slug) }}" style="color: #1a0f2e; text-decoration: none;">
+                        {{ item.product.name }}
+                    </a>
+                </h3>
+                
+                {% if item.product.brand %}
+                <p style="color: #999; font-size: 0.9rem; margin-bottom: 10px;">{{ item.product.brand.name }}</p>
+                {% endif %}
+                
+                <div class="product-price" style="margin-bottom: 15px;">
+                    <span class="price" style="font-size: 1.5rem; font-weight: bold; color: #1a0f2e;">৳{{ "{:,.0f}".format(item.product.price) }}</span>
+                    {% if item.product.original_price and item.product.original_price > item.product.price %}
+                    <span class="original-price" style="font-size: 1rem; color: #999; text-decoration: line-through; margin-left: 10px;">৳{{ "{:,.0f}".format(item.product.original_price) }}</span>
+                    {% if item.product.original_price > 0 %}
+                    <span class="discount" style="display: inline-block; background: #ff4444; color: white; padding: 2px 8px; border-radius: 3px; font-size: 0.8rem; margin-left: 8px;">
+                        -{{ "%.0f"|format(((item.product.original_price - item.product.price) / item.product.original_price) * 100) }}%
+                    </span>
+                    {% endif %}
+                    {% endif %}
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <a href="{{ url_for('product_detail', slug=item.product.slug) }}" class="btn btn-secondary" style="flex: 1; text-align: center; padding: 10px; border-radius: 5px; text-decoration: none;">
+                        View Details
+                    </a>
+                    
+                    {% if item.product.is_in_stock %}
+                    <form method="POST" action="{{ url_for('add_to_cart') }}" style="flex: 1;">
+                        <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px; border-radius: 5px;">
+                            🛒 Add to Cart
+                        </button>
+                    </form>
+                    {% else %}
+                    <button class="btn" disabled style="flex: 1; background: #ccc; color: #666; padding: 10px; border-radius: 5px; cursor: not-allowed;">
+                        Out of Stock
+                    </button>
+                    {% endif %}
+                </div>
+                
+                <p style="font-size: 0.85rem; color: #999; margin-top: 10px;">
+                    Added on {{ item.created_at.strftime('%b %d, %Y') }}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 80px 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <p style="font-size: 5rem; margin-bottom: 20px;">💔</p>
+        <h2 style="color: #666; margin-bottom: 15px;">Your Wishlist is Empty</h2>
+        <p style="color: #999; margin-bottom: 30px; font-size: 1.1rem;">Start adding products you love!</p>
+        <a href="{{ url_for('products') }}" class="btn btn-primary" style="padding: 15px 40px; font-size: 1.1rem;">
+            Browse Products
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.wishlist-btn-remove {
+    background: rgba(255, 68, 68, 0.95);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    color: white;
+}
+
+.wishlist-btn-remove:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(255, 68, 68, 0.4);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.badge {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.badge-hot {
+    background: #ff4444;
+    color: white;
+}
+
+.badge-new {
+    background: #4CAF50;
+    color: white;
+}
+
+.badge-sold-out {
+    background: #666;
+    color: white;
+}
+</style>
+{% endblock %}

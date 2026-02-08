@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Order Confirmation - EZ Gadgets{% endblock %}
+{% block content %}
+<div class="container" style="margin: 60px auto; max-width: 700px; text-align: center;">
+    <div style="font-size: 4rem; color: #5cb85c; margin-bottom: 20px;">✓</div>
+    <h1 style="margin-bottom: 10px;">Thank you for your order!</h1>
+    <p style="font-size: 1.2rem; color: #666; margin-bottom: 30px;">Order #{{ order.order_number }}</p>
+    <div style="background: #f8f8f8; padding: 30px; border-radius: 8px; margin-bottom: 30px; text-align: left;">
+        <h2 style="margin-bottom: 20px;">Order Details</h2>
+        <p><strong>Total:</strong> ৳ {{ "%.2f"|format(order.total) }}</p>
+        <p><strong>Payment Method:</strong> {{ order.payment_method.replace('_', ' ').title() }}</p>
+        <p><strong>Status:</strong> {{ order.status.title() }}</p>
+    </div>
+    <a href="{{ url_for('my_orders') }}" class="btn btn-primary">View My Orders</a>
+    <a href="{{ url_for('products') }}" class="btn btn-secondary" style="margin-left: 10px;">Continue Shopping</a>
+</div>
+{% endblock %}

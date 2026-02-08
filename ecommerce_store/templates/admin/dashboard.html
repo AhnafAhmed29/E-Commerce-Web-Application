@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EZ Gadgets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <style>
+        /* Light theme override for admin */
+        body.admin-page {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+        }
+        .admin-page .admin-section {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .admin-page .stat-card {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .admin-page .admin-header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        /* Dark mode toggle */
+        body.admin-page.dark-mode {
+            background-color: #0f0a1e;
+            color: #ffffff;
+        }
+        body.admin-page.dark-mode .admin-section,
+        body.admin-page.dark-mode .stat-card,
+        body.admin-page.dark-mode .admin-header {
+            background-color: #1a1333;
+            color: #ffffff;
+        }
+        body.admin-page.dark-mode .admin-table td {
+            color: #ffffff;
+        }
+        body.admin-page.dark-mode .admin-form-control {
+            background-color: rgba(0,0,0,0.3);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="admin-page">
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <a href="{{ url_for('index') }}" class="admin-btn admin-btn-secondary" title="Back to Website" style="display: flex; align-items: center; gap: 8px;">
+                🏠 Home
+            </a>
+            <h1>Admin Dashboard</h1>
+        </div>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <button onclick="toggleDarkMode()" class="admin-btn admin-btn-secondary" id="darkModeBtn">
+                🌙 Dark Mode
+            </button>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <!-- Admin Navigation -->
+    <div class="admin-container">
+        <div class="admin-nav">
+            <a href="{{ url_for('admin_dashboard') }}" class="active">Dashboard</a>
+            <a href="{{ url_for('admin_orders') }}">Orders</a>
+            <a href="{{ url_for('admin_products') }}">Products</a>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="admin-alert admin-alert-{{ 'success' if category == 'success' else 'error' }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+
+
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon box">📦</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ total_orders }}</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon hourglass">⏳</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ pending_orders_count }}</div>
+                    <div class="stat-label">Pending Orders</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon gear">⚙️</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ processing_orders_count }}</div>
+                    <div class="stat-label">Processing</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon truck">🚚</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ shipped_orders_count }}</div>
+                    <div class="stat-label">Shipped</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon check">✅</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ delivered_orders_count }}</div>
+                    <div class="stat-label">Delivered</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon cancel">❌</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ cancelled_orders_count }}</div>
+                    <div class="stat-label">Cancelled</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon products">🛍️</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ total_products }}</div>
+                    <div class="stat-label">Total Products</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon money">💰</div>
+                <div class="stat-content">
+                    <div class="stat-number">৳{{ "{:,.0f}".format(total_revenue) }}</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PENDING ORDERS SECTION -->
+        {% if pending_orders %}
+        <div class="admin-section">
+            <h2 style="color: #f59e0b;">🟡 Pending Orders ({{ pending_orders_count }})</h2>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in pending_orders %}
+                    <tr>
+                        <td><strong>#{{ order.order_number }}</strong></td>
+                        <td>{{ order.user.get_full_name() }}</td>
+                        <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td><strong>৳{{ "{:,.0f}".format(order.total) }}</strong></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td>
+                            <a href="{{ url_for('admin_order_detail', order_id=order.id) }}" class="admin-btn admin-btn-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- PROCESSING ORDERS SECTION -->
+        {% if processing_orders %}
+        <div class="admin-section">
+            <h2 style="color: #8b5cf6;">🟣 Processing Orders ({{ processing_orders_count }})</h2>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in processing_orders %}
+                    <tr>
+                        <td><strong>#{{ order.order_number }}</strong></td>
+                        <td>{{ order.user.get_full_name() }}</td>
+                        <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td><strong>৳{{ "{:,.0f}".format(order.total) }}</strong></td>
+                        <td><span class="status-badge status-processing">Processing</span></td>
+                        <td>
+                            <a href="{{ url_for('admin_order_detail', order_id=order.id) }}" class="admin-btn admin-btn-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- SHIPPED ORDERS SECTION -->
+        {% if shipped_orders %}
+        <div class="admin-section">
+            <h2 style="color: #3b82f6;">🔵 Shipped Orders ({{ shipped_orders_count }})</h2>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in shipped_orders %}
+                    <tr>
+                        <td><strong>#{{ order.order_number }}</strong></td>
+                        <td>{{ order.user.get_full_name() }}</td>
+                        <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td><strong>৳{{ "{:,.0f}".format(order.total) }}</strong></td>
+                        <td><span class="status-badge status-shipped">Shipped</span></td>
+                        <td>
+                            <a href="{{ url_for('admin_order_detail', order_id=order.id) }}" class="admin-btn admin-btn-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- DELIVERED ORDERS SECTION -->
+        {% if delivered_orders %}
+        <div class="admin-section">
+            <h2 style="color: #22c55e;">🟢 Delivered Orders ({{ delivered_orders_count }})</h2>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in delivered_orders %}
+                    <tr>
+                        <td><strong>#{{ order.order_number }}</strong></td>
+                        <td>{{ order.user.get_full_name() }}</td>
+                        <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td><strong>৳{{ "{:,.0f}".format(order.total) }}</strong></td>
+                        <td><span class="status-badge status-delivered">Delivered</span></td>
+                        <td>
+                            <a href="{{ url_for('admin_order_detail', order_id=order.id) }}" class="admin-btn admin-btn-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- CANCELLED ORDERS SECTION -->
+        {% if cancelled_orders %}
+        <div class="admin-section">
+            <h2 style="color: #ef4444;">🔴 Cancelled Orders ({{ cancelled_orders_count }})</h2>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in cancelled_orders %}
+                    <tr>
+                        <td><strong>#{{ order.order_number }}</strong></td>
+                        <td>{{ order.user.get_full_name() }}</td>
+                        <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td><strong>৳{{ "{:,.0f}".format(order.total) }}</strong></td>
+                        <td><span class="status-badge status-cancelled">Cancelled</span></td>
+                        <td>
+                            <a href="{{ url_for('admin_order_detail', order_id=order.id) }}" class="admin-btn admin-btn-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- No Orders Message -->
+        {% if not pending_orders and not processing_orders and not shipped_orders and not delivered_orders and not cancelled_orders %}
+        <div class="admin-section" style="text-align: center; padding: 60px 20px;">
+            <p style="font-size: 3rem; margin-bottom: 20px;">📦</p>
+            <h2 style="color: var(--admin-text-muted);">No Orders Yet</h2>
+            <p style="color: var(--admin-text-muted); margin-top: 10px;">Orders will appear here once customers start placing them.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('adminDarkMode', isDark ? 'true' : 'false');
+            document.getElementById('darkModeBtn').textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+        }
+
+        // Load dark mode preference
+        if (localStorage.getItem('adminDarkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('darkModeBtn').textContent = '☀️ Light Mode';
+        }
+    </script>
+</body>
+</html>

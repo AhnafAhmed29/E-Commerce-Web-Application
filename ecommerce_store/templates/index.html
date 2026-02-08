@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Slider -->
+<section class="hero-slider">
+    <div class="container">
+        <div class="slider-content">
+            <div class="slider-text">
+                <h1 style="font-size: 3rem; margin-bottom: 20px; color: #1a0f2e;">
+                    <span style="color: #f4d03f;">MEGA SALE</span><br>
+                    Up To 2.5K Gift Value
+                </h1>
+                <p style="font-size: 1.2rem; margin-bottom: 25px; color: #666;">500. Store Voucher + Amazing Gaming Deals</p>
+                <a href="{{ url_for('products') }}" class="btn btn-primary" style="padding: 15px 40px; font-size: 1.1rem;">Shop Now</a>
+            </div>
+            <div class="slider-images">
+                <img src="https://via.placeholder.com/400x500?text=Gaming+Keyboard" alt="Gaming Keyboard" style="max-width: 300px;">
+                <img src="https://via.placeholder.com/400x500?text=Gaming+Setup" alt="Gaming Setup" style="max-width: 300px;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Bar -->
+<section class="features-bar">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">✅</div>
+                <div class="feature-text">
+                    <h4>Authentic Products</h4>
+                    <p>100% Genuine</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-text">
+                    <h4>Official Warranty</h4>
+                    <p>Authorized Warranty</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-text">
+                    <h4>Secure Payment Options</h4>
+                    <p>Safe & Secure</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💬</div>
+                <div class="feature-text">
+                    <h4>24/7 Customer Support</h4>
+                    <p>Always Available</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💰</div>
+                <div class="feature-text">
+                    <h4>Low Price than Other Stores</h4>
+                    <p>Best Prices</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Categories -->
+<section class="container" style="margin-bottom: 60px;">
+    <h2 class="section-title">Featured Categories</h2>
+    
+    <div class="categories-grid">
+        <a href="{{ url_for('products', category='mousepad') }}" class="category-card">
+            <img src="https://via.placeholder.com/80?text=🎮" alt="Mousepad">
+            <h3>Mousepad</h3>
+        </a>
+        
+        <a href="{{ url_for('products', category='mouse') }}" class="category-card">
+            <img src="https://via.placeholder.com/80?text=🖱️" alt="Mouse">
+            <h3>Mouse</h3>
+        </a>
+        
+        <a href="{{ url_for('products', category='monitors') }}" class="category-card">
+            <img src="https://via.placeholder.com/80?text=🖥️" alt="Monitor">
+            <h3>Monitor</h3>
+        </a>
+        
+        <a href="{{ url_for('products', category='microphone') }}" class="category-card">
+            <img src="https://via.placeholder.com/80?text=🎤" alt="Microphone">
+            <h3>Microphone</h3>
+        </a>
+        
+        <a href="{{ url_for('products', category='keyboard') }}" class="category-card">
+            <img src="https://via.placeholder.com/80?text=⌨️" alt="Keyboard">
+            <h3>Keyboard</h3>
+        </a>
+        
+        <a href="{{ url_for('products', category='headset') }}" class="category-card">
+            <img src="https://via.placeholder.com/80?text=🎧" alt="Headset">
+            <h3>Headset</h3>
+        </a>
+        
+        <a href="{{ url_for('products', category='gamepad') }}" class="category-card">
+            <img src="https://via.placeholder.com/80?text=🎮" alt="Gamepad">
+            <h3>Gamepad</h3>
+        </a>
+        
+        <a href="{{ url_for('products', category='3d-printing') }}" class="category-card">
+            <img src="https://via.placeholder.com/80?text=🖨️" alt="3d Printing">
+            <h3>3d Printing</h3>
+        </a>
+    </div>
+</section>
+
+<!-- New Trends -->
+{% if new_products %}
+<section class="container" style="margin-bottom: 60px;">
+    <h2 class="section-title">New Trends</h2>
+    
+    <div class="products-grid">
+        {% for product in new_products %}
+        <div class="product-card">
+            <div class="product-badges">
+                {% if product.is_hot %}<span class="badge badge-hot">HOT</span>{% endif %}
+                {% if product.is_new %}<span class="badge badge-new">NEW</span>{% endif %}
+                {% if not product.is_in_stock %}<span class="badge badge-soldout">SOLD OUT</span>{% endif %}
+            </div>
+            
+            {% if product.has_discount %}
+            <div class="discount-badge">-{{ product.get_discount_percentage() }}%</div>
+            {% endif %}
+            
+            <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                <div class="product-image">
+                    <img src="{{ product.main_image or 'https://via.placeholder.com/300?text=' + product.name }}" alt="{{ product.name }}">
+                </div>
+            </a>
+            
+            <div class="product-info">
+                <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                </a>
+                
+                <div class="product-meta">
+                    {% if product.category %}{{ product.category.name }}{% endif %}
+                    {% if product.brand %}, {{ product.brand.name }}{% endif %}
+                </div>
+                
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                </div>
+                
+                <div class="product-price">
+                    <span class="current-price">৳ {{ "%.2f"|format(product.price) }}</span>
+                    {% if product.has_discount %}
+                    <span class="original-price">৳ {{ "%.2f"|format(product.original_price) }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if product.is_in_stock %}
+                <div class="product-actions">
+                    <form action="{{ url_for('add_to_cart') }}" method="post" style="flex: 1;">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+                    </form>
+                    {% if current_user.is_authenticated %}
+                    <form method="POST" action="{{ url_for('add_to_wishlist', product_id=product.id) }}" style="display: inline;">
+                        <button type="submit" class="wishlist-icon-btn" title="Add to wishlist">
+                            ❤️
+                        </button>
+                    </form>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" class="wishlist-icon-btn" title="Login to add to wishlist">
+                        ❤️
+                    </a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="product-actions">
+                    <button class="btn btn-primary" style="width: 100%; opacity: 0.6;" disabled>Out of Stock</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Featured Products -->
+{% if featured_products %}
+<section class="container" style="margin-bottom: 60px;">
+    <h2 class="section-title">Featured Products</h2>
+    
+    <div class="products-grid">
+        {% for product in featured_products %}
+        <div class="product-card">
+            <div class="product-badges">
+                {% if product.is_hot %}<span class="badge badge-hot">HOT</span>{% endif %}
+                {% if not product.is_in_stock %}<span class="badge badge-soldout">SOLD OUT</span>{% endif %}
+            </div>
+            
+            {% if product.has_discount %}
+            <div class="discount-badge">-{{ product.get_discount_percentage() }}%</div>
+            {% endif %}
+            
+            <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                <div class="product-image">
+                    <img src="{{ product.main_image or 'https://via.placeholder.com/300?text=' + product.name }}" alt="{{ product.name }}">
+                </div>
+            </a>
+            
+            <div class="product-info">
+                <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                </a>
+                
+                <div class="product-meta">
+                    {% if product.category %}{{ product.category.name }}{% endif %}
+                    {% if product.brand %}, {{ product.brand.name }}{% endif %}
+                </div>
+                
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                </div>
+                
+                <div class="product-price">
+                    <span class="current-price">৳ {{ "%.2f"|format(product.price) }}</span>
+                    {% if product.has_discount %}
+                    <span class="original-price">৳ {{ "%.2f"|format(product.original_price) }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if product.is_in_stock %}
+                <div class="product-actions">
+                    <form action="{{ url_for('add_to_cart') }}" method="post" style="flex: 1;">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+                    </form>
+                    {% if current_user.is_authenticated %}
+                    <form method="POST" action="{{ url_for('add_to_wishlist', product_id=product.id) }}" style="display: inline;">
+                        <button type="submit" class="wishlist-icon-btn" title="Add to wishlist">
+                            ❤️
+                        </button>
+                    </form>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" class="wishlist-icon-btn" title="Login to add to wishlist">
+                        ❤️
+                    </a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="product-actions">
+                    <button class="btn btn-primary" style="width: 100%; opacity: 0.6;" disabled>Out of Stock</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- About Section -->
+<section class="container" style="margin-bottom: 60px;">
+    <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+        <h2 class="section-title" style="text-align: center;">Your Official Source for High-End Gaming Gear in Bangladesh</h2>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Bangladesh's Trusted Gaming Accessories Store</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            EZ Gadgets is a premier destination for gamers across Bangladesh. We specialize in high-performance gaming keyboards, mice, controllers, monitors, and accessories from internationally recognized brands. Our goal is to bring premium gaming gear at competitive prices with reliable after-sales support.
+        </p>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Official Distributor & Genuine Products</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            We work directly with brands and authorized channels to ensure 100% genuine products. Every item sold by EZ Gadgets comes with official warranty coverage, giving customers confidence and peace of mind.
+        </p>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Wide Range of Gaming Products</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            From mechanical keyboards and wireless gaming mice to professional controllers and high-refresh-rate monitors, EZ Gadgets offers products for casual gamers, streamers, and competitive esports players.
+        </p>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Nationwide Delivery & Fast Service</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            EZ Gadgets delivers gaming products all over Bangladesh. We ensure safe packaging, fast shipping, and responsive customer support for a smooth shopping experience.
+        </p>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Physical Stores in Dhaka & Chattogram</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            Customers can also visit our showrooms to experience products firsthand, receive expert advice, and enjoy direct support from our team.
+        </p>
+    </div>
+</section>
+{% endblock %}
