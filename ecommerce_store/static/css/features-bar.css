@@ -1,0 +1,85 @@
+/* ========================================
+   ANIMATED FEATURES BAR STYLES
+   ======================================== */
+
+.features-bar {
+    background: #fff;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.features-scroll {
+    display: flex;
+    gap: 60px;
+    animation: scroll-features 30s linear infinite;
+    white-space: nowrap;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.feature-icon {
+    font-size: 1.5rem;
+    color: #f4d03f;
+    flex-shrink: 0;
+}
+
+.feature-text {
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Scrolling Animation */
+@keyframes scroll-features {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Pause on hover */
+.features-bar:hover .features-scroll {
+    animation-play-state: paused;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .features-scroll {
+        gap: 40px;
+        animation-duration: 20s;
+    }
+    
+    .feature-item {
+        font-size: 0.9rem;
+        gap: 8px;
+    }
+    
+    .feature-icon {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .features-bar {
+        padding: 15px 0;
+    }
+    
+    .features-scroll {
+        gap: 30px;
+    }
+    
+    .feature-item {
+        font-size: 0.85rem;
+    }
+}

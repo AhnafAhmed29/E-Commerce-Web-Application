@@ -1,27 +1,104 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Hero Slider -->
+<!-- Hero Slider Section -->
 <section class="hero-slider">
-    <div class="container">
-        <div class="slider-content">
-            <div class="slider-text">
-                <h1 style="font-size: 3rem; margin-bottom: 20px; color: #1a0f2e;">
-                    <span style="color: #f4d03f;">MEGA SALE</span><br>
-                    Up To 2.5K Gift Value
-                </h1>
-                <p style="font-size: 1.2rem; margin-bottom: 25px; color: #666;">500. Store Voucher + Amazing Gaming Deals</p>
-                <a href="{{ url_for('products') }}" class="btn btn-primary" style="padding: 15px 40px; font-size: 1.1rem;">Shop Now</a>
+    <div class="slider-container">
+        <div class="slides">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2 class="sale-badge">MEGA SALE</h2>
+                        <h1>Up To 2.5K Gift Value</h1>
+                        <p>500. Store Voucher + Amazing Gaming Deals</p>
+                        <a href="{{ url_for('products') }}" class="shop-now-btn">Shop Now</a>
+                    </div>
+                    <div class="slide-images">
+                        <img src="{{ url_for('static', filename='images/hero-keyboard.png') }}" alt="Gaming Keyboard" class="hero-img-1" onerror="this.src='https://via.placeholder.com/280x200?text=Gaming+Keyboard'">
+                        <img src="{{ url_for('static', filename='images/hero-setup.png') }}" alt="Gaming Setup" class="hero-img-2" onerror="this.src='https://via.placeholder.com/280x200?text=Gaming+Setup'">
+                    </div>
+                </div>
             </div>
-            <div class="slider-images">
-                <img src="https://via.placeholder.com/400x500?text=Gaming+Keyboard" alt="Gaming Keyboard" style="max-width: 300px;">
-                <img src="https://via.placeholder.com/400x500?text=Gaming+Setup" alt="Gaming Setup" style="max-width: 300px;">
+            
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2 class="sale-badge">NEW ARRIVALS</h2>
+                        <h1>Gaming Peripherals</h1>
+                        <p>Premium Gaming Gear at Best Prices</p>
+                        <a href="{{ url_for('products') }}" class="shop-now-btn">Explore Now</a>
+                    </div>
+                    <div class="slide-images">
+                        <img src="{{ url_for('static', filename='images/hero-mouse.png') }}" alt="Gaming Mouse" class="hero-img-1" onerror="this.src='https://via.placeholder.com/280x200?text=Gaming+Mouse'">
+                        <img src="{{ url_for('static', filename='images/hero-keyboard2.png') }}" alt="RGB Keyboard" class="hero-img-2" onerror="this.src='https://via.placeholder.com/280x200?text=RGB+Keyboard'">
+                    </div>
+                </div>
             </div>
+        </div>
+        
+        <!-- Slider Controls -->
+        <button class="slider-btn prev" onclick="changeSlide(-1)">‹</button>
+        <button class="slider-btn next" onclick="changeSlide(1)">›</button>
+        
+        <!-- Dots -->
+        <div class="slider-dots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
         </div>
     </div>
 </section>
 
-<!-- Features Bar -->
+<!-- Animated Features Bar -->
+<section class="features-bar">
+    <div class="features-scroll">
+        <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span class="feature-text">Authentic Products - 100% Genuine</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🛡️</span>
+            <span class="feature-text">Official Warranty - Authorized Warranty</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🔒</span>
+            <span class="feature-text">Secure Payment Options - Safe & Secure</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">💬</span>
+            <span class="feature-text">24/7 Customer Support - Always Available</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">💰</span>
+            <span class="feature-text">Low Price than Other Stores - Best Prices</span>
+        </div>
+        
+        <!-- Duplicate for seamless loop -->
+        <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span class="feature-text">Authentic Products - 100% Genuine</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🛡️</span>
+            <span class="feature-text">Official Warranty - Authorized Warranty</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🔒</span>
+            <span class="feature-text">Secure Payment Options - Safe & Secure</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">💬</span>
+            <span class="feature-text">24/7 Customer Support - Always Available</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">💰</span>
+            <span class="feature-text">Low Price than Other Stores - Best Prices</span>
+        </div>
+    </div>
+</section>
+
+<!-- Features Bar 
 <section class="features-bar">
     <div class="container">
         <div class="features-grid">
@@ -62,51 +139,66 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- Featured Categories -->
-<section class="container" style="margin-bottom: 60px;">
-    <h2 class="section-title">Featured Categories</h2>
-    
+<section class="featured-categories">
+    <h2>Featured Categories</h2>
     <div class="categories-grid">
-        <a href="{{ url_for('products', category='mousepad') }}" class="category-card">
-            <img src="https://via.placeholder.com/80?text=🎮" alt="Mousepad">
+        <a href="{{ url_for('category', slug='accessories') }}" class="category-card">
+            <div class="category-icon">
+                <span style="font-size: 3rem;">🖱️</span>
+            </div>
             <h3>Mousepad</h3>
         </a>
         
-        <a href="{{ url_for('products', category='mouse') }}" class="category-card">
-            <img src="https://via.placeholder.com/80?text=🖱️" alt="Mouse">
+        <a href="{{ url_for('category', slug='mice') }}" class="category-card">
+            <div class="category-icon">
+                <span style="font-size: 3rem;">🖱️</span>
+            </div>
             <h3>Mouse</h3>
         </a>
         
-        <a href="{{ url_for('products', category='monitors') }}" class="category-card">
-            <img src="https://via.placeholder.com/80?text=🖥️" alt="Monitor">
+        <a href="{{ url_for('category', slug='monitors') }}" class="category-card">
+            <div class="category-icon">
+                <span style="font-size: 3rem;">🖥️</span>
+            </div>
             <h3>Monitor</h3>
         </a>
         
-        <a href="{{ url_for('products', category='microphone') }}" class="category-card">
-            <img src="https://via.placeholder.com/80?text=🎤" alt="Microphone">
+        <a href="{{ url_for('category', slug='audio') }}" class="category-card">
+            <div class="category-icon">
+                <span style="font-size: 3rem;">🎤</span>
+            </div>
             <h3>Microphone</h3>
         </a>
         
-        <a href="{{ url_for('products', category='keyboard') }}" class="category-card">
-            <img src="https://via.placeholder.com/80?text=⌨️" alt="Keyboard">
+        <a href="{{ url_for('category', slug='keyboards') }}" class="category-card">
+            <div class="category-icon">
+                <span style="font-size: 3rem;">⌨️</span>
+            </div>
             <h3>Keyboard</h3>
         </a>
         
-        <a href="{{ url_for('products', category='headset') }}" class="category-card">
-            <img src="https://via.placeholder.com/80?text=🎧" alt="Headset">
+        <a href="{{ url_for('category', slug='audio') }}" class="category-card">
+            <div class="category-icon">
+                <span style="font-size: 3rem;">🎧</span>
+            </div>
             <h3>Headset</h3>
         </a>
         
-        <a href="{{ url_for('products', category='gamepad') }}" class="category-card">
-            <img src="https://via.placeholder.com/80?text=🎮" alt="Gamepad">
+        <a href="{{ url_for('category', slug='gamepad') }}" class="category-card">
+            <div class="category-icon">
+                <span style="font-size: 3rem;">🎮</span>
+            </div>
             <h3>Gamepad</h3>
         </a>
         
-        <a href="{{ url_for('products', category='3d-printing') }}" class="category-card">
-            <img src="https://via.placeholder.com/80?text=🖨️" alt="3d Printing">
-            <h3>3d Printing</h3>
+        <a href="{{ url_for('category', slug='3d-printing') }}" class="category-card">
+            <div class="category-icon">
+                <span style="font-size: 3rem;">🖨️</span>
+            </div>
+            <h3>3D Printing</h3>
         </a>
     </div>
 </section>

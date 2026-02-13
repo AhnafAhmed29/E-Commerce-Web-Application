@@ -70,6 +70,26 @@
                 </ul>
             </div>
             
+            <!-- Stock Status -->
+            <div class="stock-status" style="margin: 20px 0;">
+                {% if product.stock > 20 %}
+                <div class="stock-indicator in-stock">
+                    <span class="stock-icon">✓</span>
+                    <span class="stock-text">In Stock ({{ product.stock }} available)</span>
+                </div>
+                {% elif product.stock > 0 %}
+                <div class="stock-indicator low-stock">
+                    <span class="stock-icon">⚠</span>
+                    <span class="stock-text">Low Stock (Only {{ product.stock }} left)</span>
+                </div>
+                {% else %}
+                <div class="stock-indicator out-of-stock">
+                    <span class="stock-icon">✕</span>
+                    <span class="stock-text">Out of Stock</span>
+                </div>
+                {% endif %}
+            </div>
+
             <!-- Color/Edition Selection (Placeholder) -->
             <div style="margin-bottom: 20px;">
                 <label style="display: block; margin-bottom: 8px; font-weight: 600;">Color:</label>
@@ -107,7 +127,27 @@
                 
                 <div>
                     <label style="display: block; margin-bottom: 8px; font-weight: 600;">&nbsp;</label>
-                    <button class="btn btn-secondary" style="padding: 15px 25px; font-size: 1.1rem;">Buy Now</button>
+                    {% if product.is_in_stock %}
+                    <form action="{{ url_for('buy_now', product_id=product.id) }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="quantity" value="1" id="buy-quantity">
+                        <button type="submit" class="btn btn-warning" style="padding: 15px 25px; font-size: 1.1rem; background: #f4d03f; color: #1a0f2e; border: none; font-weight: 600;">
+                            Buy Now
+                        </button>
+                    </form>
+                    {% else %}
+                    <button class="btn" style="padding: 15px 25px; font-size: 1.1rem; background: #ccc; cursor: not-allowed;" disabled>
+                        Out of Stock
+                    </button>
+                    {% endif %}
+                </div>
+
+                <script>
+                // Sync quantity between Add to Cart and Buy Now
+                document.getElementById('quantity').addEventListener('input', function() {
+                    document.getElementById('cart-quantity').value = this.value;
+                    document.getElementById('buy-quantity').value = this.value;
+                });
+                </script>
                 </div>
             </div>
             

@@ -135,12 +135,12 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """User login using Strategy pattern"""
+    """User login route"""
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     
     if request.method == 'POST':
-        identifier = request.form.get('identifier')  # Email or username
+        identifier = request.form.get('identifier')  # email or phone
         password = request.form.get('password')
         remember = request.form.get('remember', False)
         
@@ -149,6 +149,31 @@ def login():
         
         if success:
             login_user(user, remember=remember)
+            
+            # Check for pending buy now AFTER successful login
+            if 'pending_buy_now' in session:
+                product_id = session.pop('pending_buy_now')
+                quantity = session.pop('pending_quantity', 1)
+                
+                # Add to cart
+                if 'cart' not in session:
+                    session['cart'] = {}
+                
+                cart = session['cart']
+                product_id_str = str(product_id)
+                
+                if product_id_str in cart:
+                    cart[product_id_str] += quantity
+                else:
+                    cart[product_id_str] = quantity
+                
+                session['cart'] = cart
+                session.modified = True
+                
+                flash('Proceeding to checkout...', 'success')
+                return redirect(url_for('checkout'))
+            
+            # Normal login redirect (if no pending buy now)
             next_page = request.args.get('next')
             flash('Welcome back!', 'success')
             return redirect(next_page) if next_page else redirect(url_for('index'))
@@ -739,6 +764,56 @@ def remove_from_wishlist(product_id):
     
     flash(f'"{product_name}" removed from wishlist!', 'success')
     return redirect(url_for('wishlist'))
+
+
+# ==================== BUY NOW ROUTE ====================
+
+# ==================== BUY NOW ROUTE ====================
+
+@app.route('/buy-now/<int:product_id>', methods=['POST'])
+def buy_now(product_id):
+    """Direct buy - add to cart and redirect to checkout"""
+    from models.product import Product
+    
+    # Check if user is logged in
+    if not current_user.is_authenticated:
+        flash('Please login to continue with your purchase.', 'info')
+        # Store the product ID in session to resume after login
+        session['pending_buy_now'] = product_id
+        session['pending_quantity'] = int(request.form.get('quantity', 1))
+        session.modified = True
+        return redirect(url_for('login'))
+    
+    # User is logged in - proceed with buy now
+    product = Product.query.get_or_404(product_id)
+    quantity = int(request.form.get('quantity', 1))
+    
+    # Check stock availability
+    if product.stock < quantity:
+        flash(f'Sorry, only {product.stock} items available in stock.', 'error')
+        return redirect(url_for('product_detail', slug=product.slug))
+    
+    # Initialize cart if needed
+    if 'cart' not in session:
+        session['cart'] = {}
+    
+    # Add to cart
+    cart = session['cart']
+    product_id_str = str(product_id)
+    
+    if product_id_str in cart:
+        cart[product_id_str] += quantity
+    else:
+        cart[product_id_str] = quantity
+    
+    session['cart'] = cart
+    session.modified = True
+    
+    flash(f'{product.name} added to cart!', 'success')
+    
+    # Redirect directly to checkout
+    return redirect(url_for('checkout'))
+
 
 # ==================== ERROR HANDLERS ====================
 
