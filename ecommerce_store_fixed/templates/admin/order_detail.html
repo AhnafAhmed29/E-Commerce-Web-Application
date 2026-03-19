@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-page">
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <a href="{{ url_for('index') }}" class="admin-btn admin-btn-secondary" title="Back to Website">🏠 Home</a>
+            <h1>Order Details: #{{ order.order_number }}</h1>
+        </div>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <button onclick="toggleDarkMode()" class="admin-btn admin-btn-secondary">🌙 Dark Mode</button>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <!-- Admin Navigation -->
+    <div class="admin-container">
+        <div class="admin-nav">
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin_orders') }}" class="active">Orders</a>
+            <a href="{{ url_for('admin_products') }}">Products</a>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="admin-alert admin-alert-{{ 'success' if category == 'success' else 'error' }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+            <!-- Left Column: Order Details -->
+            <div>
+                <!-- Customer Information -->
+                <div class="admin-section">
+                    <h2>Customer Information</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <p style="color: var(--admin-text-muted); font-size: 0.9rem; margin-bottom: 5px;">Customer Name</p>
+                            <p style="font-size: 1.1rem; font-weight: 600;">{{ order.user.get_full_name() }}</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--admin-text-muted); font-size: 0.9rem; margin-bottom: 5px;">Email</p>
+                            <p style="font-size: 1.1rem;">{{ order.shipping_email }}</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--admin-text-muted); font-size: 0.9rem; margin-bottom: 5px;">Phone</p>
+                            <p style="font-size: 1.1rem;">{{ order.shipping_phone }}</p>
+                        </div>
+                        <div>
+                            <p style="color: var(--admin-text-muted); font-size: 0.9rem; margin-bottom: 5px;">Order Date</p>
+                            <p style="font-size: 1.1rem;">{{ order.created_at.strftime('%B %d, %Y at %H:%M') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="admin-section">
+                    <h2>Shipping Address</h2>
+                    <div style="line-height: 1.8;">
+                        <p><strong>{{ order.shipping_first_name }} {{ order.shipping_last_name }}</strong></p>
+                        {% if order.shipping_company %}
+                        <p>{{ order.shipping_company }}</p>
+                        {% endif %}
+                        <p>{{ order.shipping_street }}</p>
+                        {% if order.shipping_apartment %}
+                        <p>{{ order.shipping_apartment }}</p>
+                        {% endif %}
+                        <p>{{ order.shipping_city }}, {{ order.shipping_district }}</p>
+                        {% if order.shipping_postcode %}
+                        <p>{{ order.shipping_postcode }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Order Items -->
+                <div class="admin-section">
+                    <h2>Order Items ({{ order.items.count() }} items)</h2>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th style="text-align: center;">Price</th>
+                                <th style="text-align: center;">Quantity</th>
+                                <th style="text-align: right;">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items %}
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        {% if item.product and item.product.main_image %}
+                                        <img src="{{ item.product.main_image }}" style="width: 50px; height: 50px; object-fit: contain; background: rgba(255,255,255,0.1); padding: 5px; border-radius: 6px;">
+                                        {% endif %}
+                                        <div>
+                                            <div style="font-weight: 600;">{{ item.product_name }}</div>
+                                            {% if item.product %}
+                                            <div style="font-size: 0.85rem; color: var(--admin-text-muted);">
+                                                SKU: {{ item.product.sku or 'N/A' }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align: center;">৳{{ "{:,.2f}".format(item.price) }}</td>
+                                <td style="text-align: center;">{{ item.quantity }}</td>
+                                <td style="text-align: right; font-weight: 600;">৳{{ "{:,.2f}".format(item.get_subtotal()) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr style="border-top: 2px solid var(--admin-border);">
+                                <td colspan="3" style="text-align: right; padding-top: 15px;"><strong>Subtotal:</strong></td>
+                                <td style="text-align: right; padding-top: 15px; font-weight: 600;">৳{{ "{:,.2f}".format(order.subtotal) }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align: right;"><strong>Shipping:</strong></td>
+                                <td style="text-align: right; font-weight: 600;">৳{{ "{:,.2f}".format(order.shipping_cost) }}</td>
+                            </tr>
+                            <tr style="font-size: 1.2rem;">
+                                <td colspan="3" style="text-align: right; padding-top: 10px; border-top: 1px solid var(--admin-border);"><strong>Total:</strong></td>
+                                <td style="text-align: right; padding-top: 10px; border-top: 1px solid var(--admin-border); font-weight: bold; color: var(--admin-yellow);">৳{{ "{:,.2f}".format(order.total) }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Order Notes -->
+                {% if order.order_notes %}
+                <div class="admin-section">
+                    <h2>Order Notes</h2>
+                    <p style="line-height: 1.6;">{{ order.order_notes }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Right Column: Order Status & Actions -->
+            <div>
+                <!-- Order Status -->
+                <div class="admin-section">
+                    <h2>Order Status</h2>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <p style="color: var(--admin-text-muted); font-size: 0.9rem; margin-bottom: 10px;">Current Status:</p>
+                        <span class="status-badge status-{{ order.status }}" style="font-size: 1rem; padding: 10px 20px;">
+                            {{ order.status.title() }}
+                        </span>
+                    </div>
+
+                    <form method="POST" action="{{ url_for('admin_update_order_status', order_id=order.id) }}">
+                        <div class="admin-form-group">
+                            <label>Change Status:</label>
+                            <select name="status" class="admin-form-control">
+                                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>Processing</option>
+                                <option value="shipped" {% if order.status == 'shipped' %}selected{% endif %}>Shipped</option>
+                                <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>Delivered</option>
+                                <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%;">Update Status</button>
+                    </form>
+                </div>
+
+                <!-- Payment Information -->
+                <div class="admin-section">
+                    <h2>Payment Details</h2>
+                    <div style="margin-bottom: 15px;">
+                        <p style="color: var(--admin-text-muted); font-size: 0.9rem; margin-bottom: 5px;">Payment Method</p>
+                        <p style="font-size: 1.1rem; font-weight: 600; text-transform: uppercase;">{{ order.payment_method.replace('_', ' ') }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--admin-text-muted); font-size: 0.9rem; margin-bottom: 5px;">Payment Status</p>
+                        <span class="status-badge status-{{ order.payment_status }}" style="font-size: 0.9rem;">
+                            {{ order.payment_status.title() }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="admin-section">
+                    <h2>Quick Actions</h2>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="{{ url_for('admin_orders') }}" class="admin-btn admin-btn-secondary" style="text-align: center;">← Back to All Orders</a>
+                        <a href="{{ url_for('admin_dashboard') }}" class="admin-btn admin-btn-secondary" style="text-align: center;">📊 Dashboard</a>
+                        <button onclick="window.print()" class="admin-btn admin-btn-secondary">🖨️ Print Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('adminDarkMode', document.body.classList.contains('light-mode') ? 'false' : 'true');
+        }
+
+        // Load dark mode preference
+        if (localStorage.getItem('adminDarkMode') === 'false') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+</body>
+</html>

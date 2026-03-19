@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Checkout - EZ Gadgets{% endblock %}
+{% block content %}
+<div class="container" style="margin: 40px auto;">
+    <div style="background: #5cb85c; color: #fff; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        ✓ Continue Shopping "{{ cart.items.first().product.name if cart.items.first() else 'Product' }}" has been added to your cart.
+    </div>
+    <p style="margin-bottom: 20px;">Have a coupon? <a href="#" style="color: #007bff;">Click here to enter your code</a></p>
+    <form method="POST" action="{{ url_for('checkout') }}">
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;">
+            <div>
+                <h2 style="margin-bottom: 20px;">Billing Details</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group"><label>First name *</label><input type="text" name="first_name" class="form-control" required></div>
+                    <div class="form-group"><label>Last name *</label><input type="text" name="last_name" class="form-control" required></div>
+                </div>
+                <div class="form-group"><label>Company name (optional)</label><input type="text" name="company" class="form-control"></div>
+                <div class="form-group"><label>Country / Region *</label><select name="country" class="form-control"><option>Bangladesh</option></select></div>
+                <div class="form-group"><label>Street address *</label><input type="text" name="street" class="form-control" placeholder="House number and street name" required></div>
+                <div class="form-group"><input type="text" name="apartment" class="form-control" placeholder="Apartment, suite, unit, etc. (optional)"></div>
+                <div class="form-group"><label>Town / City *</label><input type="text" name="city" class="form-control" required></div>
+                <div class="form-group"><label>District *</label><select name="district" class="form-control"><option>Dhaka</option><option>Chattogram</option><option>Other</option></select></div>
+                <div class="form-group"><label>Postcode / ZIP (optional)</label><input type="text" name="postcode" class="form-control"></div>
+                <div class="form-group"><label>Phone *</label><input type="tel" name="phone" class="form-control" required></div>
+                <div class="form-group"><label>Email address *</label><input type="email" name="email" class="form-control" value="{{ current_user.email }}" required></div>
+                <div class="form-group"><label>Order notes (optional)</label><textarea name="order_notes" class="form-control" rows="4" placeholder="Notes about your order, e.g. special notes for delivery."></textarea></div>
+            </div>
+            <div>
+                <div style="background: #f8f8f8; padding: 25px; border-radius: 8px; margin-bottom: 20px;">
+                    <h2 style="margin-bottom: 20px;">Your Order</h2>
+                    <table style="width: 100%; margin-bottom: 15px;">
+                        <thead style="border-bottom: 2px solid #ddd;"><tr><th style="padding: 10px 0; text-align: left;">PRODUCT</th><th style="padding: 10px 0; text-align: right;">SUBTOTAL</th></tr></thead>
+                        <tbody>
+                            {% for item in cart.items %}
+                            <tr><td style="padding: 10px 0;">{{ item.product.name }} × {{ item.quantity }}</td><td style="padding: 10px 0; text-align: right;">৳ {{ "%.2f"|format(item.get_subtotal()) }}</td></tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr style="border-top: 1px solid #ddd;"><td style="padding: 10px 0;">Subtotal</td><td style="padding: 10px 0; text-align: right;">৳ {{ "%.2f"|format(cart.get_total()) }}</td></tr>
+                            <tr><td style="padding: 10px 0;">Shipping</td><td style="padding: 10px 0; text-align: right;">Flat rate: ৳ 60.00</td></tr>
+                            <tr style="border-top: 2px solid #ddd; font-size: 1.2rem; font-weight: bold;"><td style="padding: 15px 0;">Total</td><td style="padding: 15px 0; text-align: right;">৳ {{ "%.2f"|format(cart.get_total() + 60) }}</td></tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div style="background: #f8f8f8; padding: 25px; border-radius: 8px;">
+                    <h3 style="margin-bottom: 15px;">Payment Information</h3>
+                    <div style="margin-bottom: 15px;"><label><input type="radio" name="payment_method" value="bank_transfer"> Direct bank transfer</label></div>
+                    <div style="margin-bottom: 15px;"><label><input type="radio" name="payment_method" value="cod" checked> Cash on delivery</label><p style="margin: 5px 0 0 25px; font-size: 0.9rem; color: #666;">Pay with cash upon delivery.</p></div>
+                    <div style="margin-bottom: 15px;"><label><input type="radio" name="payment_method" value="online"> Pay Online(Credit/Debit Card/Mobile/NetBanking/bKash)</label></div>
+                    <p style="font-size: 0.85rem; color: #666; margin: 20px 0;">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="#" style="color: #007bff;">privacy policy</a>.</p>
+                    <div style="margin-bottom: 15px;"><label><input type="checkbox" required> I have read and agree to the websites <a href="#" style="color: #007bff;">Terms & Conditions</a>, <a href="#" style="color: #007bff;">Privacy & Policy</a>, <a href="#" style="color: #007bff;">Refund & Return Policy</a> and <a href="#" style="color: #007bff;">Warranty Policy</a>. *</label></div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem;">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
