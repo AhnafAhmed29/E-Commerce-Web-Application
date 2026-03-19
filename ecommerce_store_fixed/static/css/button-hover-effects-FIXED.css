@@ -1,0 +1,229 @@
+/* ========================================
+   BUTTON HOVER EFFECTS - COMPLETE WITH YELLOW TOOLTIP
+   ======================================== */
+
+/* Primary Button (Add to Cart) */
+.btn-primary,
+button[class*="add-to-cart"],
+.add-to-cart-btn,
+button[type="submit"]:not(.wishlist-icon-btn) {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover,
+button[class*="add-to-cart"]:hover,
+.add-to-cart-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(26, 15, 46, 0.2);
+    background: #2a1f3e;
+}
+
+.btn-primary:active,
+button[class*="add-to-cart"]:active,
+.add-to-cart-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(26, 15, 46, 0.2);
+}
+
+/* Buy Now Button */
+.btn-warning,
+button[class*="buy-now"],
+.buy-now-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #f4d03f;
+    color: #1a0f2e;
+}
+
+.btn-warning:hover,
+button[class*="buy-now"]:hover,
+.buy-now-btn:hover {
+    background: #f5df5e;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(244, 208, 63, 0.4);
+    color: #1a0f2e;
+}
+
+.btn-warning:active {
+    transform: translateY(-1px);
+}
+
+/* ========================================
+   WISHLIST BUTTON - WITH YELLOW HOVER
+   ======================================== */
+
+/* Wishlist Icon Container */
+.wishlist-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+}
+
+/* Wishlist Icon Button (Both button and link) */
+.wishlist-icon-btn,
+button.wishlist-icon-btn,
+a.wishlist-icon-btn {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #ff6b6b;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    position: relative;
+}
+
+/* YELLOW HOVER EFFECT (like in screenshots) */
+.wishlist-icon-btn:hover,
+button.wishlist-icon-btn:hover,
+a.wishlist-icon-btn:hover {
+    background: #f4d03f;  /* YELLOW background on hover */
+    color: #ff6b6b;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(244, 208, 63, 0.5);
+}
+
+.wishlist-icon-btn:active {
+    transform: scale(1.0);
+}
+
+/* SVG inside wishlist button */
+.wishlist-icon-btn svg,
+button.wishlist-icon-btn svg,
+a.wishlist-icon-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s;
+    stroke: #ff6b6b;
+}
+
+/* FILL THE HEART ON HOVER */
+.wishlist-icon-btn:hover svg {
+    stroke: #ff6b6b;
+    fill: #ff6b6b;
+}
+
+/* ========================================
+   PRODUCT CARD HOVER
+   ======================================== */
+
+.product-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.08);
+}
+
+.product-image img {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   BUTTON RIPPLE EFFECT
+   ======================================== */
+
+.btn-primary::after,
+.btn-warning::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:active::after,
+.btn-warning:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* ========================================
+   DISABLED BUTTONS
+   ======================================== */
+
+button:disabled,
+button.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none !important;
+}
+
+button:disabled:hover,
+button.disabled:hover {
+    transform: none !important;
+    box-shadow: none;
+}
+
+/* ========================================
+   RESPONSIVE HOVER EFFECTS
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* Reduce hover effects on mobile */
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .btn-primary:hover,
+    .btn-warning:hover {
+        transform: translateY(-2px);
+    }
+    
+    .wishlist-icon-btn:hover,
+    a.wishlist-icon-btn:hover {
+        transform: scale(1.08);
+    }
+}
+
+/* Touch device optimization */
+@media (hover: none) and (pointer: coarse) {
+    .product-card:hover {
+        transform: none;
+    }
+    
+    .product-card:active {
+        transform: scale(0.98);
+    }
+    
+    .btn-primary:hover,
+    .btn-warning:hover {
+        transform: none;
+    }
+    
+    .btn-primary:active,
+    .btn-warning:active {
+        transform: scale(0.95);
+    }
+    
+    .wishlist-icon-btn:hover,
+    a.wishlist-icon-btn:hover {
+        transform: none;
+    }
+    
+    .wishlist-icon-btn:active,
+    a.wishlist-icon-btn:active {
+        transform: scale(0.9);
+        background: #f4d03f;
+    }
+}

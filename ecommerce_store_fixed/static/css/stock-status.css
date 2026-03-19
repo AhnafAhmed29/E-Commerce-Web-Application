@@ -1,0 +1,218 @@
+/* ========================================
+   STOCK STATUS INDICATOR STYLES
+   ======================================== */
+
+.stock-status {
+    margin: 20px 0;
+}
+
+.stock-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s;
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* In Stock - Green */
+.stock-indicator.in-stock {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    border: 2px solid #22c55e;
+}
+
+.stock-indicator.in-stock .stock-icon {
+    color: #22c55e;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Low Stock - Orange/Yellow */
+.stock-indicator.low-stock {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 2px solid #f59e0b;
+}
+
+.stock-indicator.low-stock .stock-icon {
+    color: #f59e0b;
+    animation: blink 1.5s ease-in-out infinite;
+}
+
+/* Out of Stock - Red */
+.stock-indicator.out-of-stock {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 2px solid #ef4444;
+}
+
+.stock-indicator.out-of-stock .stock-icon {
+    color: #ef4444;
+}
+
+/* Stock Icon */
+.stock-icon {
+    font-size: 1.3rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Stock Text */
+.stock-text {
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+}
+
+/* Pulse Animation for In Stock */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Blink Animation for Low Stock */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Hover Effects */
+.stock-indicator:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Additional Stock Info */
+.stock-details {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.stock-details.urgent {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+/* Stock Progress Bar */
+.stock-progress {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.stock-progress-bar {
+    height: 100%;
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+.stock-progress-bar.high {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    width: 100%;
+}
+
+.stock-progress-bar.medium {
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
+    width: 60%;
+}
+
+.stock-progress-bar.low {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+    width: 25%;
+}
+
+.stock-progress-bar.critical {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    width: 10%;
+    animation: critical-pulse 1s ease-in-out infinite;
+}
+
+@keyframes critical-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stock-indicator {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+        gap: 8px;
+    }
+    
+    .stock-icon {
+        font-size: 1.1rem;
+    }
+    
+    .stock-text {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stock-indicator {
+        font-size: 0.85rem;
+        padding: 8px 16px;
+    }
+    
+    .stock-icon {
+        font-size: 1rem;
+    }
+}
+
+/* Stock Badge (Alternative Compact Version) */
+.stock-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stock-badge.in-stock {
+    background: #22c55e;
+    color: white;
+}
+
+.stock-badge.low-stock {
+    background: #f59e0b;
+    color: white;
+}
+
+.stock-badge.out-of-stock {
+    background: #ef4444;
+    color: white;
+}

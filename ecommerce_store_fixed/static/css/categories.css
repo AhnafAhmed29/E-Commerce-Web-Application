@@ -1,0 +1,141 @@
+/* ========================================
+   FEATURED CATEGORIES WITH ICONS – Fixed
+   ======================================== */
+
+.featured-categories {
+    padding: 50px 20px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.featured-categories h2 {
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #1a0f2e;
+    margin-bottom: 30px;
+    text-align: left;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.featured-categories h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: #f4d03f;
+    border-radius: 2px;
+}
+
+/* Grid – 8 cards in a row on desktop, responsive below */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 16px;
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 10px;
+    background: #fff;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    border-color: #f4d03f;
+}
+
+/* Icon circle – reduced from 100px to 68px */
+.category-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    font-size: 1.8rem;   /* emoji size inside */
+}
+
+.category-card:hover .category-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.category-icon img {
+    width: 55%;
+    height: 55%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    position: relative;
+    z-index: 2;
+}
+
+/* Per-card gradient colours */
+.category-card:nth-child(1) .category-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.category-card:nth-child(2) .category-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.category-card:nth-child(3) .category-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.category-card:nth-child(4) .category-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.category-card:nth-child(5) .category-icon { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.category-card:nth-child(6) .category-icon { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+.category-card:nth-child(7) .category-icon { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+.category-card:nth-child(8) .category-icon { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+
+.category-card h3 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1a0f2e;
+    margin: 0;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.category-card:hover h3 {
+    color: #c8a800;
+}
+
+/* Emoji fallback inside each circle */
+.category-icon::before {
+    font-size: 1.8rem;
+    position: absolute;
+    z-index: 1;
+}
+.category-card:nth-child(1) .category-icon::before { content: '🖱️'; }
+.category-card:nth-child(2) .category-icon::before { content: '🖱️'; }
+.category-card:nth-child(3) .category-icon::before { content: '🖥️'; }
+.category-card:nth-child(4) .category-icon::before { content: '🎤'; }
+.category-card:nth-child(5) .category-icon::before { content: '⌨️'; }
+.category-card:nth-child(6) .category-icon::before { content: '🎧'; }
+.category-card:nth-child(7) .category-icon::before { content: '🎮'; }
+.category-card:nth-child(8) .category-icon::before { content: '🖨️'; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .categories-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+}
+
+@media (max-width: 768px) {
+    .categories-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .category-icon   { width: 58px; height: 58px; font-size: 1.5rem; }
+    .category-card   { padding: 14px 8px; }
+    .category-card h3 { font-size: 0.78rem; }
+}
+
+@media (max-width: 480px) {
+    .categories-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .category-icon   { width: 52px; height: 52px; font-size: 1.3rem; }
+    .category-icon::before { font-size: 1.3rem; }
+}
