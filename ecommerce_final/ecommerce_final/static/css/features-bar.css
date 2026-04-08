@@ -1,0 +1,83 @@
+/* ========================================
+   ANIMATED FEATURES BAR STYLES – Fixed
+   ======================================== */
+
+.features-bar {
+    background: #ffffff;
+    border-top: 3px solid #f4d03f;
+    border-bottom: 3px solid #f4d03f;
+    padding: 16px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Fade edges for polished look */
+.features-bar::before,
+.features-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+.features-bar::before {
+    left: 0;
+    background: linear-gradient(to right, #fff 60%, transparent);
+}
+.features-bar::after {
+    right: 0;
+    background: linear-gradient(to left, #fff 60%, transparent);
+}
+
+.features-scroll {
+    display: flex;
+    animation: scroll-features 28s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+}
+
+.feature-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 30px;
+    font-size: 0.88rem;
+    color: #444;
+    font-weight: 600;
+    border-right: 1px solid #eee;
+}
+
+.feature-item:last-child {
+    border-right: none;
+}
+
+.feature-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.feature-text {
+    white-space: nowrap;
+}
+
+@keyframes scroll-features {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.features-bar:hover .features-scroll {
+    animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+    .features-scroll { animation-duration: 20s; }
+    .feature-item    { font-size: 0.82rem; padding: 0 20px; gap: 8px; }
+    .feature-icon    { font-size: 1.1rem; }
+}
+
+@media (max-width: 480px) {
+    .features-bar { padding: 12px 0; }
+    .feature-item { padding: 0 14px; }
+}

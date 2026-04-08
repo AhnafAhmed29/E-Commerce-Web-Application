@@ -1,0 +1,434 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- ═══════════════════════════════════════════════════════
+     MARKETPLACE HERO  –  2-column: main slider + promo cards
+     ═══════════════════════════════════════════════════════ -->
+<section class="marketplace-hero">
+    <div class="container">
+        <div class="hero-grid">
+
+            <!-- ── LEFT: Main Banner Slider ── -->
+            <div class="hero-main-slider">
+                <div class="hero-slides-wrapper">
+
+                    <!-- Slide 1 -->
+                    <div class="hero-slide active"
+                         style="background-image: url('{{ url_for("static", filename="images/hero-setup.png") }}'), linear-gradient(135deg,#1a0f2e,#2d1b4e);">
+                        <div class="hero-slide-overlay"></div>
+                        <div class="hero-slide-content">
+                            <span class="hero-slide-badge">⚡ MEGA SALE</span>
+                            <h1 class="hero-slide-title">Up To 2.5K<br>Gift Value</h1>
+                            <p class="hero-slide-sub">Store Vouchers + Amazing Gaming Deals — Limited Time Only</p>
+                            <a href="{{ url_for('products') }}" class="hero-cta-btn">
+                                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3z"/></svg>
+                                Shop Now
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="hero-slide"
+                         style="background-image: url('{{ url_for("static", filename="images/hero-keyboard.png") }}'), linear-gradient(135deg,#0f2a3a,#1a4a6a);">
+                        <div class="hero-slide-overlay"></div>
+                        <div class="hero-slide-content">
+                            <span class="hero-slide-badge">🎹 NEW ARRIVALS</span>
+                            <h1 class="hero-slide-title">Gaming<br>Peripherals</h1>
+                            <p class="hero-slide-sub">Premium Gaming Gear — Mechanical Keyboards, Mice & More</p>
+                            <a href="{{ url_for('products') }}" class="hero-cta-btn">
+                                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                                Explore Now
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="hero-slide"
+                         style="background-image: url('{{ url_for("static", filename="images/hero-mouse.png") }}'), linear-gradient(135deg,#1a2a0f,#2a4a1a);">
+                        <div class="hero-slide-overlay"></div>
+                        <div class="hero-slide-content">
+                            <span class="hero-slide-badge">🚀 BEST DEALS</span>
+                            <h1 class="hero-slide-title">Nation-Wide<br>Free Delivery</h1>
+                            <p class="hero-slide-sub">On All Orders Above ৳2000 — Shop Today!</p>
+                            <a href="{{ url_for('products') }}" class="hero-cta-btn">
+                                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/><path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1v-1h3.05a2.5 2.5 0 014.9 0H19a1 1 0 001-1v-2a4 4 0 00-4-4h-3V4a1 1 0 00-1-1H3z"/></svg>
+                                View Deals
+                            </a>
+                        </div>
+                    </div>
+
+                </div><!-- /slides-wrapper -->
+
+                <!-- Arrow buttons -->
+                <button class="hero-arrow prev" id="hero-prev" aria-label="Previous slide">&#8249;</button>
+                <button class="hero-arrow next" id="hero-next" aria-label="Next slide">&#8250;</button>
+
+                <!-- Dot indicators -->
+                <div class="hero-dots">
+                    <button class="hero-dot active" aria-label="Slide 1"></button>
+                    <button class="hero-dot" aria-label="Slide 2"></button>
+                    <button class="hero-dot" aria-label="Slide 3"></button>
+                </div>
+            </div><!-- /hero-main-slider -->
+
+            <!-- ── RIGHT: Two stacked promo cards ── -->
+            <div class="hero-promo-col">
+
+                <!-- Promo card 1 – Keyboards -->
+                <a href="{{ url_for('category', slug='keyboard') }}" class="promo-card promo-card-1"
+                   style="background-image: url('{{ url_for("static", filename="images/hero-keyboard.png") }}');">
+                    <div class="promo-card-overlay"></div>
+                    <div class="promo-card-body">
+                        <span class="promo-card-label">Limited Edition</span>
+                        <div class="promo-card-title">Mechanical<br>Keyboards</div>
+                        <span class="promo-card-btn">
+                            Shop Now
+                            <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Promo card 2 – Best Deals -->
+                <a href="{{ url_for('products') }}" class="promo-card promo-card-2"
+                   style="background-image: url('{{ url_for("static", filename="images/hero-setup.png") }}');">
+                    <div class="promo-card-overlay"></div>
+                    <div class="promo-card-body">
+                        <span class="promo-card-label">Best Deals</span>
+                        <div class="promo-card-title">Gaming Setups<br>&amp; Accessories</div>
+                        <span class="promo-card-btn">
+                            Shop Now
+                            <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </span>
+                    </div>
+                </a>
+
+            </div><!-- /hero-promo-col -->
+
+        </div><!-- /hero-grid -->
+    </div><!-- /container -->
+</section><!-- /marketplace-hero -->
+
+<!-- Animated Features Bar -->
+<section class="features-bar">
+    <div class="features-scroll">
+        <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span class="feature-text">Authentic Products - 100% Genuine</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🛡️</span>
+            <span class="feature-text">Official Warranty - Authorized Warranty</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🔒</span>
+            <span class="feature-text">Secure Payment Options - Safe & Secure</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">💬</span>
+            <span class="feature-text">24/7 Customer Support - Always Available</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">💰</span>
+            <span class="feature-text">Low Price than Other Stores - Best Prices</span>
+        </div>
+        
+        <!-- Duplicate for seamless loop -->
+        <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span class="feature-text">Authentic Products - 100% Genuine</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🛡️</span>
+            <span class="feature-text">Official Warranty - Authorized Warranty</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🔒</span>
+            <span class="feature-text">Secure Payment Options - Safe & Secure</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">💬</span>
+            <span class="feature-text">24/7 Customer Support - Always Available</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">💰</span>
+            <span class="feature-text">Low Price than Other Stores - Best Prices</span>
+        </div>
+    </div>
+</section>
+
+<!-- Features Bar 
+<section class="features-bar">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">✅</div>
+                <div class="feature-text">
+                    <h4>Authentic Products</h4>
+                    <p>100% Genuine</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-text">
+                    <h4>Official Warranty</h4>
+                    <p>Authorized Warranty</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-text">
+                    <h4>Secure Payment Options</h4>
+                    <p>Safe & Secure</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💬</div>
+                <div class="feature-text">
+                    <h4>24/7 Customer Support</h4>
+                    <p>Always Available</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💰</div>
+                <div class="feature-text">
+                    <h4>Low Price than Other Stores</h4>
+                    <p>Best Prices</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<!-- Featured Categories -->
+<section class="featured-categories">
+    <h2>Featured Categories</h2>
+    <div class="categories-grid">
+
+        <a href="{{ url_for('category', slug='mousepad') }}" class="category-card">
+            <div class="category-icon"></div>
+            <h3>Mousepad</h3>
+        </a>
+
+        <a href="{{ url_for('category', slug='mouse') }}" class="category-card">
+            <div class="category-icon"></div>
+            <h3>Mouse</h3>
+        </a>
+
+        <a href="{{ url_for('category', slug='monitors') }}" class="category-card">
+            <div class="category-icon"></div>
+            <h3>Monitor</h3>
+        </a>
+
+        <a href="{{ url_for('category', slug='microphone') }}" class="category-card">
+            <div class="category-icon"></div>
+            <h3>Microphone</h3>
+        </a>
+
+        <a href="{{ url_for('category', slug='keyboard') }}" class="category-card">
+            <div class="category-icon"></div>
+            <h3>Keyboard</h3>
+        </a>
+
+        <a href="{{ url_for('category', slug='headset') }}" class="category-card">
+            <div class="category-icon"></div>
+            <h3>Headset</h3>
+        </a>
+
+        <a href="{{ url_for('category', slug='gamepad') }}" class="category-card">
+            <div class="category-icon"></div>
+            <h3>Gamepad</h3>
+        </a>
+
+        <a href="{{ url_for('category', slug='3d-printing') }}" class="category-card">
+            <div class="category-icon"></div>
+            <h3>3D Printing</h3>
+        </a>
+
+    </div>
+</section>
+
+<!-- New Trends -->
+{% if new_products %}
+<section class="container" style="margin-bottom: 60px;">
+    <h2 class="section-title">New Trends</h2>
+    
+    <div class="products-grid">
+        {% for product in new_products %}
+        <div class="product-card">
+            <div class="product-badges">
+                {% if product.is_hot %}<span class="badge badge-hot">HOT</span>{% endif %}
+                {% if product.is_new %}<span class="badge badge-new">NEW</span>{% endif %}
+                {% if not product.is_in_stock %}<span class="badge badge-soldout">SOLD OUT</span>{% endif %}
+            </div>
+            
+            {% if product.has_discount %}
+            <div class="discount-badge">-{{ product.get_discount_percentage() }}%</div>
+            {% endif %}
+            
+            <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                <div class="product-image">
+                    <img src="{{ product.main_image or 'https://via.placeholder.com/300?text=' + product.name }}" alt="{{ product.name }}">
+                </div>
+            </a>
+            
+            <div class="product-info">
+                <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                </a>
+                
+                <div class="product-meta">
+                    {% if product.category %}{{ product.category.name }}{% endif %}
+                    {% if product.brand %}, {{ product.brand.name }}{% endif %}
+                </div>
+                
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                </div>
+                
+                <div class="product-price">
+                    <span class="current-price">৳ {{ "%.2f"|format(product.price) }}</span>
+                    {% if product.has_discount %}
+                    <span class="original-price">৳ {{ "%.2f"|format(product.original_price) }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if product.is_in_stock %}
+                <div class="product-actions">
+                    <form action="{{ url_for('add_to_cart') }}" method="post" style="flex: 1;">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+                    </form>
+                    {% if current_user.is_authenticated %}
+                    <form method="POST" action="{{ url_for('add_to_wishlist', product_id=product.id) }}" style="display: inline;">
+                        <button type="submit" class="wishlist-icon-btn" title="Add to wishlist">
+                            ❤️
+                        </button>
+                    </form>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" class="wishlist-icon-btn" title="Login to add to wishlist">
+                        ❤️
+                    </a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="product-actions">
+                    <button class="btn btn-primary" style="width: 100%; opacity: 0.6;" disabled>Out of Stock</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Featured Products -->
+{% if featured_products %}
+<section class="container" style="margin-bottom: 60px;">
+    <h2 class="section-title">Featured Products</h2>
+    
+    <div class="products-grid">
+        {% for product in featured_products %}
+        <div class="product-card">
+            <div class="product-badges">
+                {% if product.is_hot %}<span class="badge badge-hot">HOT</span>{% endif %}
+                {% if not product.is_in_stock %}<span class="badge badge-soldout">SOLD OUT</span>{% endif %}
+            </div>
+            
+            {% if product.has_discount %}
+            <div class="discount-badge">-{{ product.get_discount_percentage() }}%</div>
+            {% endif %}
+            
+            <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                <div class="product-image">
+                    <img src="{{ product.main_image or 'https://via.placeholder.com/300?text=' + product.name }}" alt="{{ product.name }}">
+                </div>
+            </a>
+            
+            <div class="product-info">
+                <a href="{{ url_for('product_detail', slug=product.slug) }}">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                </a>
+                
+                <div class="product-meta">
+                    {% if product.category %}{{ product.category.name }}{% endif %}
+                    {% if product.brand %}, {{ product.brand.name }}{% endif %}
+                </div>
+                
+                <div class="product-rating">
+                    <span class="stars">★★★★★</span>
+                </div>
+                
+                <div class="product-price">
+                    <span class="current-price">৳ {{ "%.2f"|format(product.price) }}</span>
+                    {% if product.has_discount %}
+                    <span class="original-price">৳ {{ "%.2f"|format(product.original_price) }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if product.is_in_stock %}
+                <div class="product-actions">
+                    <form action="{{ url_for('add_to_cart') }}" method="post" style="flex: 1;">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+                    </form>
+                    {% if current_user.is_authenticated %}
+                    <form method="POST" action="{{ url_for('add_to_wishlist', product_id=product.id) }}" style="display: inline;">
+                        <button type="submit" class="wishlist-icon-btn" title="Add to wishlist">
+                            ❤️
+                        </button>
+                    </form>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" class="wishlist-icon-btn" title="Login to add to wishlist">
+                        ❤️
+                    </a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="product-actions">
+                    <button class="btn btn-primary" style="width: 100%; opacity: 0.6;" disabled>Out of Stock</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- About Section -->
+<section class="container" style="margin-bottom: 60px;">
+    <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+        <h2 class="section-title" style="text-align: center;">Your Official Source for High-End Gaming Gear in Bangladesh</h2>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Bangladesh's Trusted Gaming Accessories Store</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            EZ Gadgets is a premier destination for gamers across Bangladesh. We specialize in high-performance gaming keyboards, mice, controllers, monitors, and accessories from internationally recognized brands. Our goal is to bring premium gaming gear at competitive prices with reliable after-sales support.
+        </p>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Official Distributor & Genuine Products</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            We work directly with brands and authorized channels to ensure 100% genuine products. Every item sold by EZ Gadgets comes with official warranty coverage, giving customers confidence and peace of mind.
+        </p>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Wide Range of Gaming Products</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            From mechanical keyboards and wireless gaming mice to professional controllers and high-refresh-rate monitors, EZ Gadgets offers products for casual gamers, streamers, and competitive esports players.
+        </p>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Nationwide Delivery & Fast Service</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            EZ Gadgets delivers gaming products all over Bangladesh. We ensure safe packaging, fast shipping, and responsive customer support for a smooth shopping experience.
+        </p>
+        
+        <h3 style="font-size: 1.5rem; margin: 30px 0 15px; color: #1a0f2e;">Physical Stores in Dhaka & Chattogram</h3>
+        <p style="margin-bottom: 20px; color: #666; line-height: 1.8;">
+            Customers can also visit our showrooms to experience products firsthand, receive expert advice, and enjoy direct support from our team.
+        </p>
+    </div>
+</section>
+{% endblock %}

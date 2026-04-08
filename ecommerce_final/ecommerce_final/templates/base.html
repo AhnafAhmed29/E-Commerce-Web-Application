@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gamers GADGETS - Your Gaming Gear Store{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Redesign Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hero-slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/features-bar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/categories.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lightbox.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stock-status.css') }}">
+    <!-- Responsive Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/button-hover-effects-FIXED.css') }}">
+    <!-- Marketplace Hero + Chatbot -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home-marketplace.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-left">
+                <a href="#">Refund And Returns Policy</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Warranty Policy</a>
+            </div>
+            <div class="top-bar-right">
+                <a href="#">Our Brands</a>
+                <a href="#">FAQs</a>
+                <a href="#">Track Your Order</a>
+                <a href="{{ url_for('contact') }}">Contact Us</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="logo">
+                <span>🕹️👾🎮</span> Gamers GADGETS
+            </a>
+            
+            <div class="search-bar">
+                <form action="{{ url_for('products') }}" method="get">
+                    <input type="text" name="q" placeholder="Search for products" value="{{ request.args.get('q', '') }}">
+                    <button type="submit">🔍</button>
+                </form>
+            </div>
+            
+            <div class="header-actions">
+                <div class="phone-info">
+                    <small>Hotline 10AM-8PM</small>
+                    <strong>01819-940370</strong>
+                </div>
+                <a href="{{ url_for('cart') }}" class="cart-icon">
+                    🛒
+                    {% if cart_count > 0 %}
+                    <span class="cart-count">{{ cart_count }}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navigation">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('products', category='3d-printing') }}">3d Printing</a></li>
+                <li><a href="{{ url_for('products', category='pc-components') }}">Pc Components</a></li>
+                <li><a href="{{ url_for('products', category='peripherals') }}">Peripherals</a></li>
+                <li><a href="{{ url_for('products', category='monitors') }}">Display / Monitors</a></li>
+                <li><a href="{{ url_for('products', category='e-reader') }}">E-Reader</a></li>
+                <li><a href="{{ url_for('products', category='accessories') }}">Accessories</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+            </ul>
+            
+            <div class="nav-right">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('wishlist') }}">❤️ Wishlist</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">❤️ Wishlist</a>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    {% if current_user.is_admin() %}
+                        <a href="{{ url_for('admin_dashboard') }}" style="background: rgba(244, 208, 63, 0.2); padding: 5px 15px; border-radius: 5px; font-weight: 600;">⚡ Admin Dashboard</a>
+                    {% endif %}
+                    <a href="{{ url_for('my_orders') }}">My Orders</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login / Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>
+                        <a href="{{ url_for('index') }}" style="color: #fff;">
+                            <span>🕹️👾🎮</span> Gamers GADGETS
+                        </a>
+                    </h3>
+                    <p>Bangladesh's Trusted Gaming Accessories Store</p>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: #ccc;">
+                        EZ Gadgets is a premier destination for gamers across Bangladesh. We specialize in high-performance gaming keyboards, mice, controllers, monitors, and accessories from internationally recognized brands.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#" title="Facebook">f</a>
+                        <a href="#" title="Twitter">𝕏</a>
+                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="YouTube">▶</a>
+                        <a href="#" title="Pinterest">P</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Get to Know Us</h3>
+                    <ul>
+                        <li><a href="{{ url_for('about') }}">About Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Our Partners</a></li>
+                        <li><a href="#">Work With Us</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Shop By Category</h3>
+                    <ul>
+                        <li><a href="{{ url_for('products', category='keyboard') }}">Keyboards</a></li>
+                        <li><a href="{{ url_for('products', category='mouse') }}">Mouse</a></li>
+                        <li><a href="{{ url_for('products', category='gamepad') }}">Gamepad</a></li>
+                        <li><a href="{{ url_for('products', category='monitors') }}">Monitors</a></li>
+                        <li><a href="{{ url_for('products', category='microphone') }}">Microphone</a></li>
+                        <li><a href="{{ url_for('products') }}">All Products</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li><a href="#">Refund and Returns Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Warranty Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="payment-methods">
+                    <span style="color: #ccc; margin-right: 10px;">We Accept:</span>
+                    <span style="background: #fff; padding: 5px 10px; border-radius: 3px; font-size: 0.8rem;">💳 VISA</span>
+                    <span style="background: #fff; padding: 5px 10px; border-radius: 3px; font-size: 0.8rem;">💳 Mastercard</span>
+                    <span style="background: #fff; padding: 5px 10px; border-radius: 3px; font-size: 0.8rem;">💰 Cash on Delivery</span>
+                    <span style="background: #fff; padding: 5px 10px; border-radius: 3px; font-size: 0.8rem;">🏦 Bank Transfer</span>
+                </div>
+                <p style="margin-top: 20px;">&copy; 2025 EZ Gadgets. All rights reserved. | Developed By YourCompany</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Auto-hide flash messages after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(function() {
+                    alert.remove();
+                }, 300);
+            });
+        }, 5000);
+    </script>
+    
+    {% block scripts %}{% endblock %}
+
+    <!-- Redesign Scripts -->
+    <script src="{{ url_for('static', filename='css/js/hero-slider.js') }}"></script>
+    <script src="{{ url_for('static', filename='css/js/lightbox.js') }}"></script>
+
+
+    <!-- ═══════════════════════════════════════
+         CHATBOT WIDGET (visible on every page)
+         ═══════════════════════════════════════ -->
+
+    <!-- Floating toggle button -->
+    <button id="chatbot-toggle" aria-label="Open chat assistant">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+    </button>
+
+    <!-- Chat panel -->
+    <div id="chatbot-panel" role="dialog" aria-label="Chat assistant">
+        <!-- Header -->
+        <div class="chatbot-header">
+            <div class="chatbot-avatar">🤖</div>
+            <div class="chatbot-header-info">
+                <span class="chatbot-header-name">Gamers GADGETS Assistant</span>
+                <span class="chatbot-header-status">Online — ready to help</span>
+            </div>
+            <button id="chatbot-close" class="chatbot-close-btn" aria-label="Close chat">✕</button>
+        </div>
+
+        <!-- Messages area -->
+        <div class="chatbot-messages" id="chatbot-messages"></div>
+
+        <!-- Quick suggestions -->
+        <div class="chatbot-suggestions" id="chatbot-suggestions"></div>
+
+        <!-- Input row -->
+        <div class="chatbot-input-row">
+            <input type="text" id="chatbot-input"
+                   placeholder="Ask about products, delivery, warranty…"
+                   autocomplete="off" maxlength="200">
+            <button id="chatbot-send" aria-label="Send message">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero slider JS -->
+    <script src="{{ url_for('static', filename='js/home-hero.js') }}"></script>
+    <!-- Chatbot JS -->
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+</body>
+</html>

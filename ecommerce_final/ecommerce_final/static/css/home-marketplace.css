@@ -1,0 +1,297 @@
+/* ============================================================
+   MARKETPLACE HERO  – 2-column layout (slider + promo cards)
+   ============================================================ */
+
+/* ── Outer wrapper ── */
+.marketplace-hero {
+    background: #0d0a1e;
+    padding: 20px 0 0;
+}
+.marketplace-hero .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ── Two-column grid ── */
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 16px;
+    align-items: stretch;
+}
+
+/* ══════════════════════════════════════
+   LEFT – Main Banner Slider
+══════════════════════════════════════ */
+.hero-main-slider {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    min-height: 420px;
+    background: #1a0f2e;
+    box-shadow: 0 8px 40px rgba(0,0,0,.45);
+}
+
+.hero-slides-wrapper {
+    position: relative;
+    width: 100%;
+    height: 420px;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity .7s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+}
+.hero-slide.active { opacity: 1; }
+
+/* Gradient overlay so text is always readable */
+.hero-slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        105deg,
+        rgba(13,10,30,.92) 0%,
+        rgba(13,10,30,.65) 50%,
+        rgba(13,10,30,.10) 100%
+    );
+}
+
+.hero-slide-content {
+    position: relative;
+    z-index: 2;
+    padding: 44px 48px;
+    max-width: 560px;
+}
+
+.hero-slide-badge {
+    display: inline-block;
+    background: #f4d03f;
+    color: #1a0f2e;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+}
+
+.hero-slide-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.18;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 12px rgba(0,0,0,.5);
+}
+
+.hero-slide-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,.78);
+    margin-bottom: 26px;
+    line-height: 1.55;
+}
+
+.hero-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f4d03f;
+    color: #1a0f2e;
+    font-weight: 700;
+    font-size: .95rem;
+    padding: 13px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .25s, transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 18px rgba(244,208,63,.35);
+}
+.hero-cta-btn:hover {
+    background: #fce14c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(244,208,63,.5);
+}
+.hero-cta-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* Arrow buttons */
+.hero-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255,255,255,.15);
+    border: 1.5px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s, transform .2s;
+}
+.hero-arrow:hover {
+    background: #f4d03f;
+    color: #1a0f2e;
+    transform: translateY(-50%) scale(1.1);
+}
+.hero-arrow.prev { left: 16px; }
+.hero-arrow.next { right: 16px; }
+
+/* Dot indicators */
+.hero-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+.hero-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,.4);
+    cursor: pointer;
+    transition: width .3s, background .3s;
+    border: none;
+    padding: 0;
+}
+.hero-dot.active {
+    width: 28px;
+    background: #f4d03f;
+}
+
+/* ══════════════════════════════════════
+   RIGHT – Promo Cards (2 stacked)
+══════════════════════════════════════ */
+.hero-promo-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.promo-card {
+    flex: 1;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    min-height: 196px;
+    background-size: cover;
+    background-position: center;
+    text-decoration: none;
+    display: flex;
+    align-items: flex-end;
+    box-shadow: 0 6px 24px rgba(0,0,0,.35);
+    transition: transform .25s, box-shadow .25s;
+}
+.promo-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,.45);
+}
+
+.promo-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(10,6,24,.88) 0%,
+        rgba(10,6,24,.3)  55%,
+        transparent       100%
+    );
+}
+
+.promo-card-body {
+    position: relative;
+    z-index: 2;
+    padding: 20px 22px;
+    width: 100%;
+}
+
+.promo-card-label {
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #f4d03f;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.promo-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.promo-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(244,208,63,.18);
+    border: 1.5px solid #f4d03f;
+    color: #f4d03f;
+    font-size: .78rem;
+    font-weight: 700;
+    padding: 7px 16px;
+    border-radius: 6px;
+    transition: background .2s;
+}
+.promo-card:hover .promo-card-btn {
+    background: #f4d03f;
+    color: #1a0f2e;
+}
+
+/* Default gradient backgrounds when image is absent/loading */
+.promo-card-1 { background-color: #1e1040; }
+.promo-card-2 { background-color: #0f2a3a; }
+
+/* ══════════════════════════════════════
+   Features bar (kept, minor spacing fix)
+══════════════════════════════════════ */
+.marketplace-hero + .features-bar {
+    margin-top: 0;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 1024px) {
+    .hero-grid {
+        grid-template-columns: 1fr 300px;
+    }
+    .hero-slide-title { font-size: 2.1rem; }
+}
+
+@media (max-width: 768px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-main-slider,
+    .hero-slides-wrapper { min-height: 320px; height: 320px; }
+    .hero-slide-content { padding: 28px 24px; }
+    .hero-slide-title { font-size: 1.75rem; }
+    .hero-promo-col { flex-direction: row; }
+    .promo-card { min-height: 160px; }
+}
+
+@media (max-width: 480px) {
+    .hero-slide-title { font-size: 1.4rem; }
+    .hero-promo-col { flex-direction: column; }
+    .promo-card { min-height: 150px; }
+    .hero-slides-wrapper { height: 280px; }
+}
