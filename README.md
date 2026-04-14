@@ -172,7 +172,43 @@ ecommerce_fixed/
     ├── component/                 # Component-level integration tests
     ├── reports/                   # Generated test reports and coverage
     └── ecommerce_fixed/           # Test-isolated project copy/support structure
+```
 
+# How to Run the Full Project
+- 1. Clone or extract the project
+
+  Move into the project root:
+
+cd ecommerce_fixed
+- 2. Create and activate a virtual environment
+Windows
+python -m venv venv
+venv\Scripts\activate
+Linux / macOS
+python -m venv venv
+source venv/bin/activate
+- 3. Install dependencies
+pip install -r requirements.txt
+- 4. Initialize the database
+
+If the database is not already prepared, run:
+
+python init_db.py
+
+If required, apply migration or helper scripts for variants or database fixes:
+
+python create_variants_migration.py
+python migrate_variant_support_SQLITE.py
+python fix_database.py
+
+Only run these if needed for a fresh setup or schema update.
+
+- 5. Start the Flask application
+python app.py
+
+Then open the app in your browser, usually at:
+
+http://127.0.0.1:5000
 
 ## 🧪 Testing
 
@@ -216,3 +252,18 @@ JUnit XML reports
 Acceptance matrix
 
 📁 testing/reports/
+
+▶️ Running Tests
+# Install test dependencies
+pip install -r testing/requirements-test.txt
+
+# Run all tests
+pytest
+
+# Run specific category
+pytest testing/unit/
+pytest testing/system/
+pytest testing/acceptance/
+
+# Generate coverage report
+pytest --cov=.
