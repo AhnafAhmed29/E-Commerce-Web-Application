@@ -84,8 +84,6 @@ The following features are implemented to fulfill client and user needs:
 ## 🏗️ Project Structure
 
 ```bash
-
-```text
 ecommerce_fixed/
 ├── app.py                         # Main Flask application entry point and route definitions
 ├── config.py                      # App configuration (development, production, testing)
@@ -174,3 +172,47 @@ ecommerce_fixed/
     ├── component/                 # Component-level integration tests
     ├── reports/                   # Generated test reports and coverage
     └── ecommerce_fixed/           # Test-isolated project copy/support structure
+
+
+## 🧪 Testing
+
+This project follows a multi-layered testing strategy to ensure robustness and quality.
+
+🔹 1. Unit Testing
+Tests individual components in isolation
+Covers models, services, factories, strategies
+
+📁 testing/unit/
+
+🔹 2. Component Testing
+Tests interaction between modules
+
+📁 testing/component/
+
+🔹 3. System Testing
+Tests complete backend workflows
+
+📁 testing/system/
+
+🔹 4. Acceptance Testing
+Based on user stories (US01–US13)
+Validates real-world requirements
+
+📁 testing/acceptance/
+
+🔹 5. Black Box Testing (UI)
+End-to-end UI testing using Playwright
+Simulates real user interactions
+
+📁 testing/blackbox/
+
+📊 Test Reports
+
+Generated reports include:
+
+Coverage reports
+HTML reports
+JUnit XML reports
+Acceptance matrix
+
+📁 testing/reports/
