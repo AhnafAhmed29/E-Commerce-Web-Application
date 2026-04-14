@@ -251,6 +251,66 @@ HTML reports
 JUnit XML reports
 Acceptance matrix
 
+# Testing Folder Structure
+```bash
+testing/
+├── conftest.py
+├── pytest.ini
+├── requirements-test.txt
+├── README.md
+│
+├── acceptance/
+│   ├── test_us01_view_products.py
+│   ├── test_us02_product_details.py
+│   ├── test_us03_add_to_cart.py
+│   ├── test_us04_manage_cart.py
+│   ├── test_us05_responsive_access.py
+│   ├── test_us06_about_contact.py
+│   ├── test_us07_product_data_management.py
+│   ├── test_us09_search.py
+│   ├── test_us10_cart_summary.py
+│   ├── test_us11_stock_status.py
+│   ├── test_us12_reliability.py
+│   └── test_us13_authentication.py
+│
+├── unit/
+│   ├── test_models_product.py
+│   ├── test_models_order.py
+│   ├── test_models_user.py
+│   ├── test_services_auth_facade.py
+│   ├── test_services_product_facade.py
+│   ├── test_services_cart_facade.py
+│   ├── test_services_order_facade.py
+│   ├── test_strategies_auth.py
+│   ├── test_factories_user_factory.py
+│   └── test_helpers_slug.py
+│
+├── system/
+│   ├── test_customer_journey.py
+│   ├── test_admin_product_management.py
+│   ├── test_checkout_flow.py
+│   └── test_search_and_stock_flow.py
+│
+├── blackbox/
+│   ├── test_public_pages_playwright.py
+│   ├── test_cart_playwright.py
+│   ├── test_auth_playwright.py
+│   └── test_responsive_playwright.py
+│
+├── component/
+│   ├── test_product_component.py
+│   ├── test_cart_component.py
+│   ├── test_auth_component.py
+│   └── test_admin_component.py
+│
+└── reports/
+    ├── junit/
+    ├── html/
+    ├── coverage/
+    └── acceptance_matrix/
+```
+
+
 📁 testing/reports/
 
 ▶️ Running Tests
