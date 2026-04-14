@@ -84,54 +84,94 @@ The following features are implemented to fulfill client and user needs:
 ## 🏗️ Project Structure
 
 ```bash
-ecommerce_with_testing/
-└── ecommerce_fixed/
-    ├── app.py
-    ├── config.py
-    ├── requirements.txt
-    ├── init_db.py
-    ├── fix_database.py
-    ├── migrate_variant_support_SQLITE.py
-    ├── create_variants_migration.py
-    ├── verify_buy_now.py
-    ├── add_sample_variants.py
+# Project Structure
 
-    ├── instance/
-    │   └── ecommerce.db
-
-    ├── models/
-    │   ├── db.py
-    │   ├── user.py
-    │   ├── product.py
-    │   ├── product_variant.py
-    │   ├── order.py
-    │   └── wishlist.py
-
-    ├── services/
-    │   ├── facade.py
-    │   ├── chatbot_facade.py
-    │   └── site_info.py
-
-    ├── strategies/
-    │   └── auth_strategy.py
-
-    ├── factories/
-    │   └── user_factory.py
-
-    ├── templates/
-    │   ├── *.html
-    │   └── admin/
-
-    ├── static/
-    │   ├── css/
-    │   ├── js/
-    │   └── images/
-
-    └── testing/
-        ├── unit/
-        ├── component/
-        ├── system/
-        ├── acceptance/
-        ├── blackbox/
-        └── reports/
-
+```text
+ecommerce_fixed/
+├── app.py                         # Main Flask application entry point and route definitions
+├── config.py                      # App configuration (development, production, testing)
+├── requirements.txt               # Runtime Python dependencies
+├── init_db.py                     # Initializes database tables and seed-ready structure
+├── fix_database.py                # Database repair/cleanup helper
+├── create_variants_migration.py   # Variant schema migration helper
+├── migrate_variant_support_SQLITE.py # SQLite-specific variant migration script
+├── add_sample_variants.py         # Script to insert sample product variants
+├── verify_buy_now.py              # Utility script for buy-now verification/debugging
+│
+├── instance/
+│   └── ecommerce.db               # SQLite database file
+│
+├── models/                        # Data layer / ORM models
+│   ├── db.py                      # SQLAlchemy database object
+│   ├── product.py                 # Product model and product-related helpers
+│   ├── product_variant.py         # Product variant model
+│   ├── order.py                   # Order, order item, cart-related models
+│   ├── user.py                    # User/admin model and authentication fields
+│   └── wishlist.py                # Wishlist model
+│
+├── services/                      # Service/facade layer
+│   ├── facade.py                  # Core business facades for products, cart, auth, orders
+│   ├── chatbot_facade.py          # Chatbot orchestration/service logic
+│   └── site_info.py               # Static store/service information used by chatbot/pages
+│
+├── strategies/                    # Strategy pattern implementations
+│   └── auth_strategy.py           # Authentication strategy logic
+│
+├── factories/                     # Factory pattern implementations
+│   └── user_factory.py            # Factory for creating user/admin entities
+│
+├── templates/                     # Jinja2 HTML templates
+│   ├── base.html                  # Shared site layout
+│   ├── index.html                 # Home page
+│   ├── products.html              # Product listing page
+│   ├── product.html               # Product details page
+│   ├── cart.html                  # Shopping cart page
+│   ├── checkout.html              # Checkout / billing page
+│   ├── login.html                 # Login page
+│   ├── register.html              # Registration page
+│   ├── orders.html                # User order history page
+│   ├── order_confirmation.html    # Order confirmation page
+│   ├── wishlist.html              # Wishlist page
+│   ├── about.html                 # About page
+│   ├── contact.html               # Contact page
+│   ├── 404.html                   # Not found page
+│   ├── 500.html                   # Server error page
+│   └── admin/                     # Admin dashboard templates
+│       ├── dashboard.html         # Admin dashboard home
+│       ├── products.html          # Admin product management page
+│       ├── add_product.html       # Add product form
+│       ├── edit_product.html      # Edit product form
+│       ├── orders.html            # Admin orders list
+│       └── order_detail.html      # Admin order detail view
+│
+├── static/                        # Frontend assets
+│   ├── css/
+│   │   ├── style.css              # Main site styling
+│   │   ├── responsive.css         # Responsive/mobile-specific styling
+│   │   ├── admin.css              # Admin dashboard styling
+│   │   ├── hero-slider.css        # Hero/banner section styling
+│   │   ├── home-marketplace.css   # Home page marketplace layout styling
+│   │   ├── categories.css         # Category block styling
+│   │   ├── features-bar.css       # Feature strip styling
+│   │   ├── stock-status.css       # Product stock display styling
+│   │   ├── chatbot.css            # Chatbot UI styling
+│   │   ├── lightbox.css           # Lightbox/gallery styling
+│   │   └── button-hover-effects-FIXED.css # Button interaction styling
+│   ├── js/
+│   │   ├── chatbot.js             # Chatbot frontend behavior
+│   │   └── home-hero.js           # Home page hero interactions
+│   └── images/                    # Product images, hero images, icons
+│
+└── testing/                       # Full project testing suite and reports
+    ├── conftest.py                # Shared pytest fixtures and seeded test data
+    ├── pytest.ini                 # Pytest configuration and markers
+    ├── requirements-test.txt      # Test dependencies
+    ├── README.md                  # Testing-specific usage guide
+    │
+    ├── acceptance/                # Acceptance tests mapped to user stories
+    ├── unit/                      # Unit tests for models, services, helpers, strategies
+    ├── system/                    # End-to-end system tests using Flask test client
+    ├── blackbox/                  # Browser-style black-box tests (Playwright)
+    ├── component/                 # Component-level integration tests
+    ├── reports/                   # Generated test reports and coverage
+    └── ecommerce_fixed/           # Test-isolated project copy/support structure
