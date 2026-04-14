@@ -36,7 +36,7 @@ The application is designed to meet the following core requirements:
 
 * Separate Admin and User Authentication System
 
-✨ Key Features
+✨ Key Findings
 
 The following features are implemented to fulfill client and user needs:
 
