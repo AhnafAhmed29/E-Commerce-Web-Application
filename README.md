@@ -84,7 +84,6 @@ The following features are implemented to fulfill client and user needs:
 ## 🏗️ Project Structure
 
 ```bash
-# Project Structure
 
 ```text
 ecommerce_fixed/
